@@ -1,2 +1,2 @@
 # alt-f4
-Sam's Team
+Sams' Team
