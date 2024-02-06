@@ -9,7 +9,7 @@ https://drive.google.com/drive/folders/1ZSkxl7VxgtRV_14QptnedVwnkqiZ49pA (minecr
 - Play back a single sound
 - Listen to multiple sounds simultaneously (i.e., layer multiple sounds on top of each other)
 - Listen to a sequence of sounds
-- Rename a sound
+- ~~Rename a sound~~
 
 
 ## Check-in 2-2
