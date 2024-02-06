@@ -1,7 +1,7 @@
 # alt-f4
 Sams' Team
 
-# Requirements
+# Epoch 1
 (These are your tentative requirements, with more detail to come.) Your sound archive should have a text-based command line interface that allows a user to:
 - See a list of available commands (i.e., what can I do?)
 - See a list of available sounds
