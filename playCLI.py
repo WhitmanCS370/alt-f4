@@ -8,7 +8,7 @@ def play_sound(filename):
     play_obj.wait_done()
 
 def play_sound_sequence(filenames):
-    for sound in sys.argv[3:]:
+    for sound in sys.argv[2:]:
         print(f'Playing {sound}')
         file = sound
         play_sound(file)
@@ -16,17 +16,16 @@ def play_sound_sequence(filenames):
 if sys.argv[1] == '-p' or sys.argv[1] == '--play':
     playing_sequence = False
 
-    # if there are more than 2 arguments, then we are playing a sequence
-    if len(sys.argv) > 3:
-        play_sound_sequence(sys.argv[2:])
-
-    if sys.argv[2]:
+    if len(sys.argv) < 3:
+        print('No file provided...')
+    elif len(sys.argv) == 3:
         print(f'Playing {sys.argv[2]}')
         file = sys.argv[2]
         play_sound(file)
+    # if there are more than 2 arguments, then we are playing a sequence
+    elif len(sys.argv) > 3:
+        play_sound_sequence(sys.argv[2:])
 
-    else:
-        print('no file provided...')
 
 if sys.argv[1] == '-r' or sys.argv[1] == '--rename':
     if sys.argv[2]:
