@@ -11,8 +11,5 @@ if sys.argv[1] == '-p' or sys.argv[1] == '--play':
         print(f'Playing {sys.argv[2]}')
         file = sys.argv[2]
         play_sound(file)
-        
-if sys.argv[1] == '-ls' or sys.argv[1] == '--list_sounds':
-           
     else:
         print('no file provided...')
