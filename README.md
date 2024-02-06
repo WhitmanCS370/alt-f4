@@ -8,7 +8,7 @@ https://drive.google.com/drive/folders/1ZSkxl7VxgtRV_14QptnedVwnkqiZ49pA (minecr
 - See a list of available sounds
 - Play back a single sound
 - Listen to multiple sounds simultaneously (i.e., layer multiple sounds on top of each other)
-- Listen to a sequence of sounds
+- ~~Listen to a sequence of sounds~~
 - ~~Rename a sound~~
 
 
