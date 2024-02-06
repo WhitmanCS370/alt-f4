@@ -6,11 +6,18 @@ def play_sound(filename):
     play_obj = wave_obj.play()
     play_obj.wait_done()
 
+def multi_sound(filenames):
+    for fn in filenames:
+        wave_obj = simpleaudio.WaveObject.from_wave_file(fn)
+        play_obj = wave_obj.play()
+    play_obj.wait_done()
+
+sounds = []
 if sys.argv[1] == '-p' or sys.argv[1] == '--play':
     if sys.argv[2]:
-        print(f'Playing {sys.argv[2]}')
-        file = sys.argv[2]
-        play_sound(file)
-        
+        for arg in sys.argv[2:]:
+            sounds.append(arg)
+        print(f'Playing sounds')
+        multi_sound(sounds)
     else:
         print('no file provided...')
