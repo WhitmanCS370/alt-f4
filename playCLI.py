@@ -1,5 +1,6 @@
 import sys
 import simpleaudio
+import os
 
 def play_sound(filename):
     wave_obj = simpleaudio.WaveObject.from_wave_file(filename)
@@ -12,5 +13,11 @@ if sys.argv[1] == '-p' or sys.argv[1] == '--play':
         file = sys.argv[2]
         play_sound(file)
         
+    else:
+        print('no file provided...')
+
+if sys.argv[1] == '-r' or sys.argv[1] == '--rename':
+    if sys.argv[2]:
+        os.rename(sys.argv[2], sys.argv[3])
     else:
         print('no file provided...')
