@@ -24,7 +24,7 @@ if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
     print('--help, -h        : lists help menu, what each function is and how to use it.')
     print('--play, -p        : plays sound(s) that are passed as argument(s) in form \'directory/filename.wav\'.')
     print('                  : how to play sounds sequentially?')
-    print('                  : how to play sounds overlapping?')
+    print('                  : how to play sounds overlapping? default')
     print('--rename, -r      : changes name of file (specified by first argument) to name specified in second argument.')
     print('--list_sounds, -ls: lists all of the sounds/files in the default sounds directory')
     print('                  : to list from non-default directories, the directory name should be passed as argument.')
