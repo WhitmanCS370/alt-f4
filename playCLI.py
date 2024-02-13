@@ -24,6 +24,7 @@ if sys.argv[1] == '-p' or sys.argv[1] == '--play':
         print(f'Playing {sys.argv[2]}')
         file = sys.argv[2]
         play_sound(file)
+        
     # if there are more than 2 arguments, then we are playing a sequence
     elif len(sys.argv) > 3:
         play_sound_sequence(sys.argv[2:])
@@ -45,3 +46,17 @@ if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
     print('--rename, -r: changes name of file (specified by first argument) to name specified in second argument.')
 
     sys.exit(0);
+
+def find_folder(folder):
+    return(os.getcwd()+"/"+folder)
+
+if sys.argv[1] == '-ls' or sys.argv[1] == '--list_sounds':
+    if argvlen>=3:
+        category = find_folder(sys.argv[2])
+        for file in os.listdir(category):
+           print(file)
+    else:
+        for file in os.listdir(os.getcwd()+"/sounds"):
+           print(file)
+        
+
