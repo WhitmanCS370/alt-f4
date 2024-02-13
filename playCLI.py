@@ -22,6 +22,22 @@ def play_sound_sequence(filenames):
         play_sound(file)
 
 sounds = []
+
+if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
+
+    # This prints out a sample of how you might use this command
+    print("usage:",sys.argv[0], '[command] [arg(s)]')
+    print('--help, -h        : lists help menu, what each function is and how to use it.')
+    print('--play, -p        : plays sound(s) that are passed as argument(s) in form \'directory/filename.wav\'.')
+    print('                  : when multiple sounds are passed as arguments, the sounds play all at once.')
+    print('--sequence, -s    : plays provided sounds sequentially')
+    print('                  : sounds are passed as argument(s) in form \'directory/filename.wav\'.')
+    print('--rename, -r      : changes name of file (specified by first argument) to name specified in second argument.')
+    print('--list_sounds, -ls: lists all of the sounds/files in the default sounds directory')
+    print('                  : to list from non-default directories, the directory name should be passed as argument.')
+
+    sys.exit(0);
+
 if sys.argv[1] == '-p' or sys.argv[1] == '--play':
     if sys.argv[2]:
         for arg in sys.argv[2:]:
@@ -51,16 +67,6 @@ if sys.argv[1] == '-r' or sys.argv[1] == '--rename':
         print('no file provided...')
 
 
-if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
-
-    # This prints out a sample of how you might use this command
-    print("usage:",sys.argv[0], '[command] [arg(s)]')
-    print('--help, -h  : lists help menu, what each function is and how to use it.')
-    print('--play, -p  : plays sound(s) that are passed as argument(s).')
-    print('--rename, -r: changes name of file (specified by first argument) to name specified in second argument.')
-
-    sys.exit(0);
-
 def find_folder(folder):
     return(os.getcwd()+"/"+folder)
 
@@ -73,4 +79,3 @@ if sys.argv[1] == '-ls' or sys.argv[1] == '--list_sounds':
         for file in os.listdir(os.getcwd()+"/sounds"):
            print(file)
         
-
