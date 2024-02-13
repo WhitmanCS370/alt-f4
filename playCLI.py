@@ -15,6 +15,12 @@ def multi_sound(filenames):
         play_obj = wave_obj.play()
     play_obj.wait_done()
 
+def play_sound_sequence(filenames):
+    for sound in sys.argv[2:]:
+        print(f'Playing {sound}')
+        file = sound
+        play_sound(file)
+
 sounds = []
 
 if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
@@ -37,14 +43,9 @@ if sys.argv[1] == '-p' or sys.argv[1] == '--play':
             sounds.append(arg)
         print(f'Playing sounds')
         multi_sound(sounds)
-def play_sound_sequence(filenames):
-    for sound in sys.argv[2:]:
-        print(f'Playing {sound}')
-        file = sound
-        play_sound(file)
 
-if sys.argv[1] == '-p' or sys.argv[1] == '--play':
-    playing_sequence = False
+
+if sys.argv[1] == '-s' or sys.argv[1] == '--sequence':
 
     if len(sys.argv) < 3:
         print('No file provided...')
