@@ -9,10 +9,6 @@ def play_sound(filename):
     play_obj = wave_obj.play()
     play_obj.wait_done()
 
-def find_folder(folder):
-    return(os.getcwd()+"/"+folder)
-
-
 if sys.argv[1] == '-p' or sys.argv[1] == '--play':
     if sys.argv[2]:
         print(f'Playing {sys.argv[2]}')
@@ -38,6 +34,9 @@ if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
 
     sys.exit(0);
 
+def find_folder(folder):
+    return(os.getcwd()+"/"+folder)
+
 if sys.argv[1] == '-ls' or sys.argv[1] == '--list_sounds':
     if argvlen>=3:
         category = find_folder(sys.argv[2])
@@ -47,3 +46,4 @@ if sys.argv[1] == '-ls' or sys.argv[1] == '--list_sounds':
         for file in os.listdir(os.getcwd()+"/sounds"):
            print(file)
         
+
