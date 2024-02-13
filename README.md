@@ -15,3 +15,4 @@ Sams' Team
 So far, we have implemented a simple CLI that is able to play an audio file which is passed in as an argument through the command line.
 
 this is a test line!
+this is another test line!
