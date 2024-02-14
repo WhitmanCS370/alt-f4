@@ -3,6 +3,7 @@ import simpleaudio
 import os
 
 argvlen = len(sys.argv)
+sounds = []
 
 def play_sound(filename):
     wave_obj = simpleaudio.WaveObject.from_wave_file(filename)
@@ -15,13 +16,15 @@ def multi_sound(filenames):
         play_obj = wave_obj.play()
     play_obj.wait_done()
 
-def play_sound_sequence(filenames):
+def play_sound_sequence():
     for sound in sys.argv[2:]:
         print(f'Playing {sound}')
         file = sound
         play_sound(file)
 
-sounds = []
+def find_folder(folder):
+    return(os.getcwd()+"/"+folder)
+
 
 if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
 
@@ -47,18 +50,16 @@ if sys.argv[1] == '-p' or sys.argv[1] == '--play':
 
 
 if sys.argv[1] == '-s' or sys.argv[1] == '--sequence':
-
+    # if we don't have at least the function flag (-s or --sequence) and a sound, we can't play anything.
     if len(sys.argv) < 3:
         print('No file provided...')
-    elif len(sys.argv) == 3:
-        print(f'Playing {sys.argv[2]}')
-        file = sys.argv[2]
-        play_sound(file)
-        
-    # if there are more than 2 arguments, then we are playing a sequence
-    elif len(sys.argv) > 3:
-        play_sound_sequence(sys.argv[2:])
-
+    # we have sound(s) to play (sounds are sys.argv[2] and greater), so the sound is played and its name is printed when it does.
+    elif len(sys.argv) >= 3:
+        # loops through remaining sounds and plays them.
+        for sound in sys.argv[2:]:
+            print(f'Playing {sound}')
+            play_sound(sound)
+     
 
 if sys.argv[1] == '-r' or sys.argv[1] == '--rename':
     if sys.argv[2]:
@@ -66,9 +67,6 @@ if sys.argv[1] == '-r' or sys.argv[1] == '--rename':
     else:
         print('no file provided...')
 
-
-def find_folder(folder):
-    return(os.getcwd()+"/"+folder)
 
 if sys.argv[1] == '-ls' or sys.argv[1] == '--list_sounds':
     if argvlen>=3:
@@ -78,4 +76,4 @@ if sys.argv[1] == '-ls' or sys.argv[1] == '--list_sounds':
     else:
         for file in os.listdir(os.getcwd()+"/sounds"):
            print(file)
-        
+           
