@@ -13,3 +13,6 @@ Sams' Team
 
 ## Check-in 2-2
 So far, we have implemented a simple CLI that is able to play an audio file which is passed in as an argument through the command line.
+
+### Use cases/User stories
+https://docs.google.com/document/d/1Bvmg0npipdcdK8qbS1LAFQIgXJsy3d2tt_Xbh7vTE2g/edit
