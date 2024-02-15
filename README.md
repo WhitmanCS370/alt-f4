@@ -1,6 +1,9 @@
 # alt-f4
 Sams' Team
 
+### Group Members
+Jack Allard, Jacob Burrill, Coden Stark, Sam Boerner.
+
 # Epoch 1
 (These are your tentative requirements, with more detail to come.) Your sound archive should have a text-based command line interface that allows a user to:
 - See a list of available commands (i.e., what can I do?)
