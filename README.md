@@ -4,11 +4,11 @@ Sams' Team
 #### Group Members
 - Jack Allard: rename sounds, single sound playback.
 - Jacob Burrill: list available sounds (of default 'sounds' directory and specified directories.
-- Coden Stark: help menu update (lists the available commands), commented the code, shortened the sequential sounds play function.
+- Coden Stark: help menu update (lists the available commands), commented the code, shortened the sequential sounds play function, added delay sound to sequential play (and first arg checks)
 - Sam Boerner: simultaneous sounds playback.
 
 # How to use
-To use our program, open the command line, navigate to the directory in which the playCLI.py file is located, and run `python playCLI.py`. This displays a help menu that lists all current functionality and how to use each. To play sound, run `python playCLI.py -p [sound-directory/sound-file.wav]`. If multiple sound files are used as arguments when calling `-p`, then the sounds play concurrently. To play sounds sequentially, run `python playCLI.py -s [sound-directory/sound-file.wav]...`. Our project currently has two built-in sound directories, the default 'sounds' directory and the 'minecraft_sounds' directory (the sounds in each can be seen by calling `python playCLI.py -ls [directory-name]`). To rename a sound, run `python playCLI.py -r [original-file] [new-name]`.
+To use our program, open the command line, navigate to the directory in which the playCLI.py file is located, and run `python playCLI.py`. This displays a help menu that lists all current functionality and how to use each. To play sound, run `python playCLI.py -p [sound-directory/sound-file.wav]`. If multiple sound files are used as arguments when calling `-p`, then the sounds play concurrently. To play sounds sequentially, run `python playCLI.py -s [optional delay] [sound-directory/sound-file.wav]...`. Our project currently has two built-in sound directories, the default 'sounds' directory and the 'minecraft_sounds' directory (the sounds in each can be seen by calling `python playCLI.py -ls [directory-name]`). To rename a sound, run `python playCLI.py -r [original-file] [new-name]`.
 
 # Epoch 1
 
@@ -23,6 +23,8 @@ Adding sound editing is an upcoming issue, and might demand some changes in base
 
 #### Testing
 Most of our testing was done by mimicing users. We called different functions using the command line arguments specified in the help menu and checked to make sure they had the intended effect. For renaming, we visually confirmed in our files that the original document no longer existed but a file of the new name had the same audio associated with it. Playing sounds was easier to check as there was audio associated with success (although it was occasionally hard to tell if all the sounds were playing when we called them to play concurrently). We tested edge cases and got out-of-bounds errors (that we fixed) due to the ordering of checks in some of our functions. Before getting too far into the next epoch, we need to write concrete test cases to ensure that we don't lose any of our current functionality when moving forward.
+
+More recent additions to testing include checking the type of the first argument in the `-play` and `-sequence` commands. While it would be worthwile to check if the arguments are normally within the available sounds, checking for numbers makes it easier to implement the delay functionality.
 
 
 ## Check-in 2-2
