@@ -45,6 +45,11 @@ def multi_sound(filenames):
 def find_folder(folder):
     return(os.getcwd()+"/"+folder)
 
+def func_usage(funcname):
+    # should look through the help menu for the relevant item and print it.
+    # called when the user isn't doing a call right.
+    pass
+
 
 if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
     # the help menu, formatted exactly how it displays on the command line.
@@ -60,7 +65,6 @@ if sys.argv[1] == '-p' or sys.argv[1] == '--play':
     try:
         float(sys.argv[2])              # if the first argument is a number...
         sys.argv.remove(sys.argv[2])    # get rid of it as it will cause issues in the code.
-        print("!!! When using -p or --play to play, please don't use any numbers. !!!")
     except ValueError:
         pass
 
