@@ -2,6 +2,7 @@ import sys
 import simpleaudio
 import os
 import time
+import helpmenu as hm
 
 argvlen = len(sys.argv)
 sounds = []
@@ -47,17 +48,10 @@ def find_folder(folder):
 
 if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
     # the help menu, formatted exactly how it displays on the command line.
-    print("usage:",sys.argv[0], '[command] [arg(s)]')
-    print('commands:           description + usage:')
-    print('--help, -h        : lists help menu, what each function is and how to use it.')
-    print('--play, -p        : plays sound(s) that are passed as argument(s) in form \'directory/filename.wav\'.')
-    print('                  : when multiple sounds are passed as arguments, the sounds play all at once.')
-    print('--sequence, -s    : plays provided sounds sequentially')
-    print('                  : sounds are passed as argument(s) in form \'directory/filename.wav\'.')
-    print('                  : to play sounds with a set amount of delay between starts, pass a number as the first argument.')
-    print('--rename, -r      : changes name of file (specified by first argument) to name specified in second argument.')
-    print('--list_sounds, -ls: lists all of the sounds/files in the default sounds directory')
-    print('                  : to list from non-default directories, the directory name should be passed as argument.')
+    hm.MENUINTRO
+
+    for command, desc in hm.HELPMENU.items():
+        print(f"{command:<18}: {desc}")
 
     sys.exit(0);
 
@@ -103,7 +97,7 @@ if sys.argv[1] == '-r' or sys.argv[1] == '--rename':
     if argvlen < 3 or argvlen < 4:        # if not enough args are provided, we can't rename
         print('no file provided...')           
     else:
-        os.rename(sys.argv[2], sys.argv[3])           # otherwise, change name of given file to val of other arg.
+        os.rename(sys.argv[2], sys.argv[3])           # otherwise, change name of given file
 
 
 if sys.argv[1] == '-ls' or sys.argv[1] == '--list_sounds':
