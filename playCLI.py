@@ -7,7 +7,7 @@ argvlen = len(sys.argv)
 sounds = []
 extensions = ['.wav']   # can add more file types here as we add support for them, only impacts visible files.
 
-
+# TODO: Please use docstring conventions. See https://peps.python.org/pep-0257/ 
 # delay_sound, called by --sequence.
     # this code is used when --sequence is called with the first argument being an int
     # the first argument is interpreted as the delay.
@@ -44,9 +44,12 @@ def multi_sound(filenames):
 def find_folder(folder):
     return(os.getcwd()+"/"+folder)
 
+# TODO: Most code should be in functions
 
 if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
     # the help menu, formatted exactly how it displays on the command line.
+    # TODO: Consider using a triple-quoted string instead. Triple-quoted strings can have newlines in them.
+    #       You might find this function useful: https://docs.python.org/3/library/textwrap.html#textwrap.dedent
     print("usage:",sys.argv[0], '[command] [arg(s)]')
     print('commands:           description + usage:')
     print('--help, -h        : lists help menu, what each function is and how to use it.')
@@ -67,6 +70,8 @@ if sys.argv[1] == '-p' or sys.argv[1] == '--play':
         float(sys.argv[2])              # if the first argument is a number...
         sys.argv.remove(sys.argv[2])    # get rid of it as it will cause issues in the code.
         print("!!! When using -p or --play to play, please don't use any numbers. !!!")
+        # TODO: Either ignore extraneous inputs or print the usage message and exit.
+        #       (It's useful to have a function to print the usage message!)
     except ValueError:
         pass
 
@@ -95,12 +100,14 @@ if sys.argv[1] == '-s' or sys.argv[1] == '--sequence':
             print(f'Playing {sound}')
             play_sound(sound)
     elif argvlen >= 4 and delay:                  # we need one more arg (because delay takes up a arg), but play sounds.
+        # TODO: The lack of parallelism here is a bit weird. In the case above, set delay to 0 rather than duplicating code.
         print(f"Adding {str(delay)}s of delay between sounds.")
         delay_sound(sys.argv[3:], delay)          # functions more like -p, loop in the function rather than in call.
      
 
 if sys.argv[1] == '-r' or sys.argv[1] == '--rename':
     if argvlen < 3 or argvlen < 4:        # if not enough args are provided, we can't rename
+        # TODO: Clarify this is an error. Print "error" in the message and exit immediately.
         print('no file provided...')           
     else:
         os.rename(sys.argv[2], sys.argv[3])           # otherwise, change name of given file to val of other arg.
