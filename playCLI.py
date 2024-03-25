@@ -9,12 +9,13 @@ sounds = []
 extensions = ['.wav']   # can add more file types here as we add support for them, only impacts visible files.
 
 
-# delay_sound, called by --sequence.
-    # this code is used when --sequence is called with the first argument being an int
-    # the first argument is interpreted as the delay.
-    # when looping through the sounds to play them sequentially, delay is added using
-    #   time.sleep().
 def delay_sound(filenames, delay):
+    """Play sounds sequentially, with a delay between each sound.
+
+    Arguments:
+    filenames -- a list of audio files to be played.
+    delay -- a float value that determines the length of the delay (in seconds).     
+    """
     for fn in filenames:
         wave_obj = simpleaudio.WaveObject.from_wave_file(fn)
         print(f'Playing {fn}')
@@ -22,18 +23,22 @@ def delay_sound(filenames, delay):
         time.sleep(delay)
     play_obj.wait_done()
 
-# play_sound, called by --sequence.
-    # because we want to play sounds one after the other, we wait for the sound to finish.
-    # it's called repeatedly in --sequence to cover each sound in the list of arguments.
 def play_sound(filename):
+    """Play a single sound in its entirity.
+
+    Argument:
+    filename -- the name of the audio file to play.
+    """
     wave_obj = simpleaudio.WaveObject.from_wave_file(filename)
     play_obj = wave_obj.play()
     play_obj.wait_done()
 
-# multi_sound, called by --play.
-    # adds together all of the .wav sound files and starts them all before waiting for them
-    #   all to end.
 def multi_sound(filenames):
+    """Play multiple sounds concurrently.
+
+    Argument:
+    filenames -- a list of audio files to play concurrently.
+    """
     for fn in filenames:
         wave_obj = simpleaudio.WaveObject.from_wave_file(fn)
         play_obj = wave_obj.play()
