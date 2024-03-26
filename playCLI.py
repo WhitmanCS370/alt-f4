@@ -2,6 +2,7 @@ import sys
 import simpleaudio
 import os
 import time
+
 import helpmenu as hm
 
 argvlen = len(sys.argv)
@@ -50,15 +51,20 @@ def multi_sound(filenames):
 def find_folder(folder):
     return(os.getcwd()+"/"+folder)
 
-def func_usage(funcname):
+def func_usage():
     # should look through the help menu for the relevant item and print it.
     # called when the user isn't doing a call right.
+
+    #sys.argv[1], check if the first thing contains this?
+    for command, desc in hm.HELPMENU.items():
+        if sys.argv[1] in str(command):
+            print(f"{command}: {desc}")
     pass
 
 
 if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
     # the help menu, formatted exactly how it displays on the command line.
-    hm.MENUINTRO
+    print("usage:",sys.argv[0], "[command] [arg(s)]")
 
     for command, desc in hm.HELPMENU.items():
         print(f"{command:<18}: {desc}")
@@ -85,11 +91,12 @@ if sys.argv[1] == '-s' or sys.argv[1] == '--sequence':
     # if we don't have at least the function flag (-s or --sequence) and a sound, we can't play anything.
     if argvlen < 3:
         print('No file provided...')
+        func_usage()
 
     # tests (and delay calculations)
     try:
         delay = float(sys.argv[2])                 # if argument casts to float without issue, save as the delay. 
-    except ValueError:
+    except:
         delay = None                               # if there's an error, then it's probably a string (should be a sound).
         
     # we have sound(s) to play, so the sound(s) is played (one after the other) and its name is printed when it does.
