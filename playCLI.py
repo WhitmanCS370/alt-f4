@@ -61,8 +61,8 @@ def func_usage():
             print(f"{command}: {desc}")
     pass
 
-
-if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
+def display_help():
+    #if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
     # the help menu, formatted exactly how it displays on the command line.
     print("usage:",sys.argv[0], "[command] [arg(s)]")
 
@@ -71,7 +71,8 @@ if argvlen<=1 or sys.argv[1]=='--help' or sys.argv[1]=='-h':
 
     sys.exit(0);
 
-if sys.argv[1] == '-p' or sys.argv[1] == '--play':
+def play_sound_func():
+    #if sys.argv[1] == '-p' or sys.argv[1] == '--play':
     # tests
     try:
         float(sys.argv[2])              # if the first argument is a number...
@@ -87,7 +88,8 @@ if sys.argv[1] == '-p' or sys.argv[1] == '--play':
         multi_sound(sounds)                        # and play them by calling multi_sound with the appended sounds.
 
 
-if sys.argv[1] == '-s' or sys.argv[1] == '--sequence':
+def play_sequence_func():
+    #if sys.argv[1] == '-s' or sys.argv[1] == '--sequence':
     # if we don't have at least the function flag (-s or --sequence) and a sound, we can't play anything.
     if argvlen < 3:
         print('No file provided...')
@@ -109,14 +111,16 @@ if sys.argv[1] == '-s' or sys.argv[1] == '--sequence':
         delay_sound(sys.argv[3:], delay)          # functions more like -p, loop in the function rather than in call.
      
 
-if sys.argv[1] == '-r' or sys.argv[1] == '--rename':
+def rename_func():
+    #if sys.argv[1] == '-r' or sys.argv[1] == '--rename':
     if argvlen < 3 or argvlen < 4:        # if not enough args are provided, we can't rename
         print('no file provided...')           
     else:
         os.rename(sys.argv[2], sys.argv[3])           # otherwise, change name of given file
 
 
-if sys.argv[1] == '-ls' or sys.argv[1] == '--list_sounds':
+def display_sounds():
+    #if sys.argv[1] == '-ls' or sys.argv[1] == '--list_sounds':
     if argvlen>=3:                                      # if we're specifying which directory to open...
         category = find_folder(sys.argv[2])             # find the folder that the user specified...
         for file in os.listdir(category):
@@ -125,3 +129,31 @@ if sys.argv[1] == '-ls' or sys.argv[1] == '--list_sounds':
     else:
         for file in os.listdir(os.getcwd()+"/sounds"):  # otherwise, we can just print content of default "sounds" folder
            print(file)
+
+commands = {
+    "--help": display_help,
+    "-h": display_help,
+    "--list_sounds": display_sounds,
+    "-ls": display_sounds,
+    "--play": play_sound_func,
+    "-p": play_sound_func,
+    "--sequence": play_sequence_func,
+    "-s": play_sequence_func,
+    "--rename": rename_func,
+    "-r": rename_func
+}
+
+if __name__ == "__main__":
+    if argvlen<=1:
+        display_help()
+
+    try:
+        input = sys.argv[1]
+        commands[input]()
+    except (IndexError, KeyError):
+        print("Invalid command. Use -h or --help for help.")
+        sys.exit(1)
+
+
+
+# transform flags: reverse, trim, filter, multi (requires multiple inputs)
