@@ -4,6 +4,7 @@ import os
 import time
 
 import helpmenu as hm
+import inputparser as ip
 
 argvlen = len(sys.argv)
 sounds = []
@@ -72,44 +73,67 @@ def display_help():
     sys.exit(0);
 
 def play_sound_func():
-    #if sys.argv[1] == '-p' or sys.argv[1] == '--play':
+    # also need to have a default/work without an internal flag... need to see if 
+    # sys.argv[2] is a valid sound if it isn't one of our accepted flags.
+    if sys.argv[2] == "-m" or sys.argv[2] == "--multi":
+        play_multisound_func(3)
+        
+    elif sys.argv[2] == "-s" or sys.argv[2] == "--sequence":
+        if argvlen < 4:
+            print('No file provided...')
+
+        # tests (and delay calculations)
+        try:
+            delay = float(sys.argv[3])                 # if argument casts to float without issue, save as the delay. 
+        except:
+            delay = None                               # if there's an error, then it's probably a string (should be a sound).
+            
+        # we have sound(s) to play, so the sound(s) is played (one after the other) and its name is printed when it does.
+        if argvlen >= 4 and delay == None:
+            for sound in sys.argv[3:]:                # loops through remaining sounds and plays them (works with 1 sound).
+                print(f'Playing {sound}')
+                play_sound(sound)
+        elif argvlen >= 5 and delay:                  # we need one more arg (because delay takes up a arg), but play sounds.
+            print(f"Adding {str(delay)}s of delay between sounds.")
+            delay_sound(sys.argv[4:], delay)          # functions more like -p, loop in the function rather than in call.
+
+def play_multisound_func(index):
+    """ Play multiple sounds at once.
+    Arguments:
+    the index the sounds start at (or a list of sounds?)
+    """
     # tests
     try:
-        float(sys.argv[2])              # if the first argument is a number...
-        sys.argv.remove(sys.argv[2])    # get rid of it as it will cause issues in the code.
+        float(sys.argv[index])              # if the first argument is a number...
+        sys.argv.remove(sys.argv[index])    # get rid of it as it will cause issues in the code.
     except ValueError:
         pass
 
     # code to play the sounds
-    if sys.argv[2]:                                # if there is a sound to play... (sys.argv[2] not null)
-        for arg in sys.argv[2:]:                   # then append all of the sounds we have together...
+    if sys.argv[index]:                                # if there is a sound to play... (sys.argv[2] not null)
+        for arg in sys.argv[index:]:                   # then append all of the sounds we have together...
             sounds.append(arg)
         print(f'Playing sounds')
         multi_sound(sounds)                        # and play them by calling multi_sound with the appended sounds.
 
-
-def play_sequence_func():
-    #if sys.argv[1] == '-s' or sys.argv[1] == '--sequence':
-    # if we don't have at least the function flag (-s or --sequence) and a sound, we can't play anything.
-    if argvlen < 3:
+def play_seqsound_func(index):
+    if argvlen < 4:
         print('No file provided...')
-        func_usage()
 
     # tests (and delay calculations)
     try:
-        delay = float(sys.argv[2])                 # if argument casts to float without issue, save as the delay. 
+        delay = float(sys.argv[3])                 # if argument casts to float without issue, save as the delay. 
     except:
         delay = None                               # if there's an error, then it's probably a string (should be a sound).
-        
+            
     # we have sound(s) to play, so the sound(s) is played (one after the other) and its name is printed when it does.
-    if argvlen >= 3 and delay == None:
-        for sound in sys.argv[2:]:                # loops through remaining sounds and plays them (works with 1 sound).
+    if argvlen >= 4 and delay == None:
+        for sound in sys.argv[3:]:                # loops through remaining sounds and plays them (works with 1 sound).
             print(f'Playing {sound}')
             play_sound(sound)
-    elif argvlen >= 4 and delay:                  # we need one more arg (because delay takes up a arg), but play sounds.
+    elif argvlen >= 5 and delay:                  # we need one more arg (because delay takes up a arg), but play sounds.
         print(f"Adding {str(delay)}s of delay between sounds.")
-        delay_sound(sys.argv[3:], delay)          # functions more like -p, loop in the function rather than in call.
-     
+        delay_sound(sys.argv[4:], delay)          # functions more like -p, loop in the function rather than in call.
 
 def rename_func():
     #if sys.argv[1] == '-r' or sys.argv[1] == '--rename':
@@ -130,6 +154,7 @@ def display_sounds():
         for file in os.listdir(os.getcwd()+"/sounds"):  # otherwise, we can just print content of default "sounds" folder
            print(file)
 
+
 commands = {
     "--help": display_help,
     "-h": display_help,
@@ -137,8 +162,6 @@ commands = {
     "-ls": display_sounds,
     "--play": play_sound_func,
     "-p": play_sound_func,
-    "--sequence": play_sequence_func,
-    "-s": play_sequence_func,
     "--rename": rename_func,
     "-r": rename_func
 }
@@ -146,6 +169,8 @@ commands = {
 if __name__ == "__main__":
     if argvlen<=1:
         display_help()
+
+    ip.parse(sys.argv)
 
     try:
         input = sys.argv[1]
