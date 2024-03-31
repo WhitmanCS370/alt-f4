@@ -1,5 +1,4 @@
 
-
 HELPMENU = {
     "commands": "description + usage:",
     "--help, -h": "lists help menu, what each function is and how to use it.",
