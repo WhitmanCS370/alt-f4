@@ -35,3 +35,4 @@ https://docs.google.com/document/d/1Bvmg0npipdcdK8qbS1LAFQIgXJsy3d2tt_Xbh7vTE2g/
 
 ### New architecture specifications
 https://docs.google.com/document/d/e/2PACX-1vSPnYQpgqhx5gYlePdWDlQ6_wK9AGMG9exWWu7vxbkf8pdi0E2Myf2Pgi-RcGGALU7CGyCEryk2gdDc/pub
+Use argparse to parse command line flags and options!
