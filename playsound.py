@@ -48,6 +48,9 @@ def play_sound_func():
         
     elif sys.argv[2] == "-s" or sys.argv[2] == "--sequence":
         play_seqsound_func(3)
+    
+    else: 
+        play_seqsound_func(3)
 
 def play_multisound_func(index):
     """ Play multiple sounds at once.

@@ -25,6 +25,7 @@ def ProcessArguments(args):
     if args.input_merge:
         print("Input merge is enabled")
     # Add your actual program logic here
+    
 
 def main():
     # Create the parser
