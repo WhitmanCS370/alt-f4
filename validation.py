@@ -21,9 +21,9 @@ def validate_list_sounds(args):
     return True
 
 def validate_add_sound(args):
-    # TODO: implement
-    pass
+    # TODO: implement, move validation stuff in the function to here.
+    return True
 
 def validate_remove_sound(args):
     # TODO: implement
-    pass
+    return True
