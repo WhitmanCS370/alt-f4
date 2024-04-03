@@ -44,7 +44,7 @@ class main(cmd.Cmd):
                     delay = delayCommand[1]
                 else:
                     flags.append(item.replace("--",""))
-            else:
+            elif not item == '':
                 sounds.append(item)
 
         return flags, sounds, delay
@@ -65,18 +65,13 @@ class main(cmd.Cmd):
         return
     
     def _delay_play(self, sounds, delay):
-        for sound in sounds:
+        for i, sound in enumerate(sounds):
+            if i > 0:                 # add delay as long as it's not the last sound.
+                time.sleep(float(delay))
             wave_obj = simpleaudio.WaveObject.from_wave_file(f"{sound}.wav")
             print(f'Playing {sound}')
             play_obj = wave_obj.play()
-
-            if not sound == sounds[-1]:                 # add delay as long as it's not the last sound.
-                time.sleep(float(delay))
         play_obj.wait_done()
-
-    def _mute_play(self, sounds):
-        # TODO: use numpy (np) to make a silent audio object and play it.
-        pass
 
     def do_play(self, args):
         """Play sound(s), either all at once or sequentially (with or without delay).
@@ -94,7 +89,7 @@ class main(cmd.Cmd):
             elif "multi" in flags:
                 self._multi_play(sounds) 
             elif "mute" in flags:
-                self._mute_play(sounds)
+                return
             elif flags == [] or "seq" in flags:
                 self._seq_play(sounds)
         else:

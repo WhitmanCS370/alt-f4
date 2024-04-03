@@ -1,9 +1,8 @@
 files:
-    list
-    rename
-    remove
-    add
-    remove
+    list -
+    rename -
+    remove -
+    add -
     default_directory
 
 audioediting:
@@ -13,8 +12,8 @@ audioediting:
     trimming (1 sound)
 
 playing:
-    sequential
-    multiple
+    sequential -
+    multiple -
     none
 
 output:
