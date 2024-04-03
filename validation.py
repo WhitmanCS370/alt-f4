@@ -1,21 +1,21 @@
-def validate_play(self, args):
+def validate_play(args):
+    """Validates the play 
+    """
     # TODO: check if first thing is a sound or flag (maybe)
-    input = args.split(" ")
-    if len(input) == 1 and input[0]=="":
+    if not args:
         return False
-    print(len(input))
     return True
     
-def validate_rename(self, args):
+def validate_rename(args):
     # TODO: think if there's other things we need to validate
     input = args.split(" ")
     if len(input) == 2:
         return True
     return False
     
-def validate_list_sounds(self, args):
+def validate_list_sounds(args):
     # TODO: think if there's other things we need to validate
     input = args.split(" ")
-    if len(input) > 1:
+    if len(input)==1 and input[0]=="":
         return False
     return True

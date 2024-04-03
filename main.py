@@ -2,13 +2,16 @@ import cmd
 import simpleaudio
 import time
 import os
+import validation
+import pathlib as path
 
 class main(cmd.Cmd):
 
+    commandDict = {"play":validation.validate_play, "rename":validation.validate_rename, "list_sounds":validation.validate_list_sounds}
+
     def __init__(self):
         super().__init__()
-        self.commandDict = {"play":self.validate_play, "rename":self.validate_rename, "list_sounds":self.validate_list_sounds}
-        self.intro = "ooga chaka ooga ooga ooga chaka"
+        self.intro = "Command line interface for audio archive."
         self.prompt = "input command: "
         # init audio editor
         # init file manager (for file editing)
@@ -23,27 +26,27 @@ class main(cmd.Cmd):
         else:
             return False
         
-    def validate_play(self, args):
-        # TODO: check if first thing is a sound or flag (maybe)
-        input = args.split(" ")
-        if len(input) == 1 and input[0]=="":
-            return False
-        print(len(input))
-        return True
+    # def validate_play(self, args):
+    #     # TODO: check if first thing is a sound or flag (maybe)
+    #     input = args.split(" ")
+    #     if len(input) == 1 and input[0]=="":
+    #         return False
+    #     print(len(input))
+    #     return True
     
-    def validate_rename(self, args):
-        # TODO: think if there's other things we need to validate
-        input = args.split(" ")
-        if len(input) == 2:
-            return True
-        return False
+    # def validate_rename(self, args):
+    #     # TODO: think if there's other things we need to validate
+    #     input = args.split(" ")
+    #     if len(input) == 2:
+    #         return True
+    #     return False
     
-    def validate_list_sounds(self, args):
-        # TODO: think if there's other things we need to validate
-        input = args.split(" ")
-        if len(input) > 1:
-            return False
-        return True
+    # def validate_list_sounds(self, args):
+    #     # TODO: think if there's other things we need to validate
+    #     input = args.split(" ")
+    #     if len(input) > 1:
+    #         return False
+    #     return True
 
     # def auto_help(self, command):
     #     print("invalid argument...")
@@ -138,18 +141,15 @@ class main(cmd.Cmd):
         """
         pass
 
-    def do_list_sounds(self, args):
-        """List sounds in specified/default folder.
-        usage) list_sounds <(optional) folder>
+    def do_list_sounds(self, args = "sounds"):
+        """List sounds in specified folder.
+        usage) list_sounds <folder>
         """
 
         if(self.validate("list_sounds", args)):
-            folder = "sounds"
             input = args.split(" ")
-
-            if input:
-                folder = input[0]
-            folderPath = os.getcwd()+"/"+folder
+            folderPath = path.Path(os.getcwd()).as_posix()+"/"+input[0]
+            print(folderPath)
 
             for file in os.listdir(folderPath):
                 if file.endswith(".wav"):      
