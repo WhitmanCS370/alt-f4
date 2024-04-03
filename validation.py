@@ -19,3 +19,11 @@ def validate_list_sounds(args):
     if len(input)==1 and input[0]=="":
         return False
     return True
+
+def validate_add_sound(args):
+    # TODO: implement
+    pass
+
+def validate_remove_sound(args):
+    # TODO: implement
+    pass
