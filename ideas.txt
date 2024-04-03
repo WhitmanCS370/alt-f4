@@ -14,7 +14,7 @@ audioediting:
 playing:
     sequential -
     multiple -
-    none
+    none -
 
 output:
     output (name)
