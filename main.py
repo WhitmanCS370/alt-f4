@@ -1,36 +1,174 @@
 import cmd
 import simpleaudio
+import time
+import os
 
 class main(cmd.Cmd):
 
     def __init__(self):
         super().__init__()
+        self.commandDict = {"play":self.validate_play, "rename":self.validate_rename, "list_sounds":self.validate_list_sounds}
         self.intro = "ooga chaka ooga ooga ooga chaka"
         self.prompt = "input command: "
+        # init audio editor
+        # init file manager (for file editing)
+        # init play module
+        # init out module
 
+    def validate(self, inputType, args):
+        ret = True
+        if inputType in self.commandDict.keys():
+            ret = self.commandDict[inputType](args)
+            return ret
+        else:
+            return False
+        
+    def validate_play(self, args):
+        # TODO: check if first thing is a sound or flag (maybe)
+        input = args.split(" ")
+        if len(input) == 1 and input[0]=="":
+            return False
+        print(len(input))
+        return True
+    
+    def validate_rename(self, args):
+        # TODO: think if there's other things we need to validate
+        input = args.split(" ")
+        if len(input) == 2:
+            return True
+        return False
+    
+    def validate_list_sounds(self, args):
+        # TODO: think if there's other things we need to validate
+        input = args.split(" ")
+        if len(input) > 1:
+            return False
+        return True
 
-    def do_play(self, args, nArgs = None):
-        # have flags, if --multi, use multisound
-        #             if --seq, use sequential
+    # def auto_help(self, command):
+    #     print("invalid argument...")
+    #     print(f"type 'help {command}', or'help' to see all commands.")
 
-        # if argvlen >= index+1 and delay == None:
-        #     for sound in sys.argv[index:]:                # loops through remaining sounds and plays them (works with 1 sound).
-        #         print(f'Playing {sound}')
-        #         play_sound(sound)
-        # elif argvlen >= index+2 and delay:                  # we need one more arg (because delay takes up a arg), but play sounds.
-        #     print(f"Adding {str(delay)}s of delay between sounds.")
-        #     delay_sound(sys.argv[index+1:], delay)          # functions more like -p, loop in the function rather than in call.
-        sounds = args.split(" ")
+    def _parse_play(self, input):
+        flags = []
+        sounds = []
+        delay = None
 
+        for item in input:
+            if "--" in item:
+                if "--delay" in item:
+                    delayCommand = item.split("=")
+                    delay = delayCommand[1]
+                else:
+                    flags.append(item.replace("--",""))
+            else:
+                sounds.append(item)
+
+        return flags, sounds, delay
+
+    def _multi_play(self, sounds):
+        for sound in sounds:
+            wave_obj = simpleaudio.WaveObject.from_wave_file(f"{sound}.wav")
+            play_obj = wave_obj.play()
+        play_obj.wait_done()
+        return
+    
+    def _seq_play(self, sounds):
         for sound in sounds:
             wave_obj = simpleaudio.WaveObject.from_wave_file(f"{sound}.wav")
             play_obj = wave_obj.play()
             play_obj.wait_done()
+        return
+    
+    def _delay_play(self, sounds, delay):
+        for sound in sounds:
+            wave_obj = simpleaudio.WaveObject.from_wave_file(f"{sound}.wav")
+            print(f'Playing {sound}')
+            play_obj = wave_obj.play()
+
+            if not sound == sounds[-1]:                 # add delay as long as it's not the last sound.
+                time.sleep(float(delay))
+        play_obj.wait_done()
+
+    def do_play(self, args):
+        """Play sound(s), either all at once or sequentially (with or without delay).
+        usage) play [multi|seq|delay={delaytime}] <file_name(s)>
+        """
+        # have flags, if --multi, use multisound
+        #             if --seq, use sequential
+        # if delay is added, use --seq
+        #             delay is of form --delay=float
+
+        # TODO: add error catching for if --delay=(something other than float)
+    
+        if(self.validate("play", args)):
+            input = args.split(" ")
+            flags, sounds, delay = self._parse_play(input)
+            
+            if delay:
+                print(f"play with {delay}s of delay")
+                self._delay_play(sounds, delay)
+            elif "multi" in flags:
+                self._multi_play(sounds)  
+            elif flags == [] or "seq" in flags:
+                self._seq_play(sounds)
+        else:
+            self.do_help("play")
+
+    def do_rename(self, args):
+        """Rename an audio file.
+        usage) rename <original_file> <new_name>        
+        """
+        if(self.validate("rename", args)):
+            input = args.split(" ")
+            os.rename(input[0], input[1]) 
+            pass
+        else:
+            self.do_help("rename")
+
+    def do_add_sound(self, args):
+        """Add sound to audio archive.
+        usage) add_sound <folder_to_add_to> <path_to_original_file>
+        """
+        pass
+
+    def do_remove_sound(self, args):
+        """Remove sound from audio archive.
+        usage) remove_sound <path_to_file>
+        """
+        pass
+
+    def do_list_sounds(self, args):
+        """List sounds in specified/default folder.
+        usage) list_sounds <(optional) folder>
+        """
+
+        if(self.validate("list_sounds", args)):
+            folder = "sounds"
+            input = args.split(" ")
+
+            if input:
+                folder = input[0]
+            folderPath = os.getcwd()+"/"+folder
+
+            for file in os.listdir(folderPath):
+                if file.endswith(".wav"):      
+                    print(file)   
+        else:
+            self.do_help("list_sounds")
+                
             
     def do_party(self, args):
+        """
+        party time!!! prints out 'woot woot'
+        usage) party
+        """
         print("woot woot")
 
     def do_exit(self, args):
+        """ End the command line interface loop/program.
+        usage) exit
+        """
         print("goodbye")
         return True
 
