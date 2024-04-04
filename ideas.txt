@@ -1,0 +1,20 @@
+files:
+    list -
+    rename -
+    remove -
+    add -
+    default_directory
+
+audioediting:
+    combining (2 sounds+)
+    reversing (1 sound)
+    transposing (1 sound)
+    trimming (1 sound)
+
+playing:
+    sequential -
+    multiple -
+    none -
+
+output:
+    output (name)
