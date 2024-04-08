@@ -6,13 +6,16 @@ import validation
 import pathlib as path
 import shutil
 
+import playsound as play
+
 class main(cmd.Cmd):
 
     commandDict = {"play":validation.validate_play,
                    "rename":validation.validate_rename,
                    "list_sounds":validation.validate_list_sounds,
                    "add_sound":validation.validate_add_sound,
-                   "remove_sound":validation.validate_remove_sound}
+                   "remove_sound":validation.validate_remove_sound,
+                   "delay":validation.validate_delay}
 
     def __init__(self):
         super().__init__()
@@ -78,20 +81,23 @@ class main(cmd.Cmd):
         usage) play [multi|seq|delay={delaytime}] <file_name(s)>
         """
         # TODO: add error catching for if --delay=(something other than float)
+        #       should actually add to some validation.
     
         if(self.validate("play", args)):
             input = args.split(" ")
-            flags, sounds, delay = self._parse_play(input)
+            flags, sounds, delay = play.parse_play(input)
             
             if delay:
-                print(f"play with {delay}s of delay")
-                self._delay_play(sounds, delay)
+                if(self.validate("delay",args)):
+                    print(f"play with {delay}s of delay")
+                    play.delay_play(sounds, delay)
+                return
             elif "multi" in flags:
-                self._multi_play(sounds) 
+                play.multi_play(sounds) 
             elif "mute" in flags:
                 return
             elif flags == [] or "seq" in flags:
-                self._seq_play(sounds)
+                play.seq_play(sounds)
         else:
             self.do_help("play")
 
