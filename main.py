@@ -6,7 +6,7 @@ import validation
 import pathlib as path
 import shutil
 
-import playsound as play
+from playsound import AudioPlayer
 
 class main(cmd.Cmd):
 
@@ -21,6 +21,7 @@ class main(cmd.Cmd):
         super().__init__()
         self.intro = "Command line interface for audio archive."
         self.prompt = "input command: "
+        self.player = AudioPlayer(self)
         # init audio editor
         # init file manager (for file editing)
         # init play module
@@ -35,7 +36,7 @@ class main(cmd.Cmd):
             print("That's not a recognized command! Type 'help' to view commands.")
             return False
 
-    def _parse_play(self, input):
+    def parse_play(self, input):
         flags = []
         sounds = []
         delay = None
@@ -52,22 +53,6 @@ class main(cmd.Cmd):
 
         return flags, sounds, delay
 
-    def _multi_play(self, sounds):
-        for sound in sounds:
-            wave_obj = simpleaudio.WaveObject.from_wave_file(f"{sound}.wav")
-            play_obj = wave_obj.play()
-        play_obj.wait_done()
-        return
-    
-    def _seq_play(self, sounds):
-        for sound in sounds:
-            wave_obj = simpleaudio.WaveObject.from_wave_file(f"{sound}.wav")
-            print(f'Playing {sound}')
-            play_obj = wave_obj.play()
-            play_obj.wait_done()
-        return
-    
-    def _delay_play(self, sounds, delay):
         for i, sound in enumerate(sounds):
             if i > 0:                 # add delay as long as it's not the last sound.
                 time.sleep(float(delay))
@@ -84,20 +69,7 @@ class main(cmd.Cmd):
         #       should actually add to some validation.
     
         if(self.validate("play", args)):
-            input = args.split(" ")
-            flags, sounds, delay = play.parse_play(input)
-            
-            if delay:
-                if(self.validate("delay",args)):
-                    print(f"play with {delay}s of delay")
-                    play.delay_play(sounds, delay)
-                return
-            elif "multi" in flags:
-                play.multi_play(sounds) 
-            elif "mute" in flags:
-                return
-            elif flags == [] or "seq" in flags:
-                play.seq_play(sounds)
+            self.player.play(args)
         else:
             self.do_help("play")
 
