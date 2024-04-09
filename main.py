@@ -22,7 +22,6 @@ class main(cmd.Cmd):
         self.intro = "Command line interface for audio archive."
         self.prompt = "input command: "
         self.player = AudioPlayer(self)
-        # init audio editor
         # init file manager (for file editing)
         # init play module
         # init out module
