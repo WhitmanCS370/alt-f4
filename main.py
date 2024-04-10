@@ -7,21 +7,23 @@ import pathlib as path
 import shutil
 
 from playsound import AudioPlayer
+from validation import Validator
 
 class main(cmd.Cmd):
 
-    commandDict = {"play":validation.validate_play,
-                   "rename":validation.validate_rename,
-                   "list_sounds":validation.validate_list_sounds,
-                   "add_sound":validation.validate_add_sound,
-                   "remove_sound":validation.validate_remove_sound,
-                   "delay":validation.validate_delay}
+    commandDict = {"play":Validator.validate_play,
+                   "rename":Validator.validate_rename,
+                   "list_sounds":Validator.validate_list_sounds,
+                   "add_sound":Validator.validate_add_sound,
+                   "remove_sound":Validator.validate_remove_sound,
+                   "delay":Validator.validate_delay}
 
     def __init__(self):
         super().__init__()
         self.intro = "Command line interface for audio archive."
         self.prompt = "input command: "
         self.player = AudioPlayer(self)
+        self.validator = Validator(self)
         # init file manager (for file editing)
         # init play module
         # init out module
