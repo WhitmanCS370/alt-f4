@@ -13,7 +13,6 @@ class AudioPlayer():
         
         if delay:
             if(self.controller.validate("delay",args)):
-                print(f"play with {delay} seconds of delay")
                 self.delay_play(sounds, delay)
             return
         elif "multi" in flags:
@@ -24,6 +23,7 @@ class AudioPlayer():
             self.seq_play(sounds)
 
     def multi_play(self, sounds):
+        print("Playing all sounds.")
         for sound in sounds:
             wave_obj = simpleaudio.WaveObject.from_wave_file(f"{sound}.wav")
             play_obj = wave_obj.play()
@@ -39,6 +39,7 @@ class AudioPlayer():
         return
         
     def delay_play(self, sounds, delay):
+        print(f"Playing with {delay} seconds of delay.")
         for i, sound in enumerate(sounds):
             if i > 0:                 # add delay as long as it's not the last sound.
                 time.sleep(float(delay))

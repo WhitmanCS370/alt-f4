@@ -13,10 +13,13 @@ class FileManager():
     
     def list_sounds(self, args):
         input = args.split(" ")
-        folderPath = path.Path(os.getcwd()).as_posix()+"/"+input[0]
-        print(folderPath)
+        targetDirectory = path.Path(os.getcwd()).as_posix()+"/"+input[0]
+        print(targetDirectory)
 
-        for file in os.listdir(folderPath):
+        if not os.path.isdir(targetDirectory):
+            print("Folder name not recognized.")
+            return
+        for file in os.listdir(targetDirectory):
             if file.endswith(".wav"):      
                 print(file)  
 
@@ -29,7 +32,7 @@ class FileManager():
         if not os.path.isdir(targetDirectory): 
             print("Target directory not recognized.")
         elif os.path.exists(os.path.join(targetDirectory, os.path.basename(input[1]))):
-            print("There alread exists a file in that location with that name. Please try again with another name.")
+            print("There already exists a file in that location with that name. Please try again with another name.")
         elif not os.path.exists(sourcePath):
             print("Cannot recognize source sound file.")
         else:
@@ -39,6 +42,7 @@ class FileManager():
         input = args.split(" ")
         filePath = path.Path(input[0]).resolve()
         if not os.path.exists(filePath):
-                print("Cannot recognize source file.")
+            print(f"Cannot remove {filePath}. Make sure the path and file extension are correct.")
         else:
+            print(f"Removed {filePath}")
             os.remove(filePath)

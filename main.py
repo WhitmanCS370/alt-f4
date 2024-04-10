@@ -1,32 +1,38 @@
 import cmd
 
 from playsound import AudioPlayer
-from validation import Validator
+import validation
 from filemanager import FileManager
 
 class main(cmd.Cmd):
 
-    commandDict = {"play":Validator.validate_play,
-                   "rename":Validator.validate_rename,
-                   "list_sounds":Validator.validate_list_sounds,
-                   "add_sound":Validator.validate_add_sound,
-                   "remove_sound":Validator.validate_remove_sound,
-                   "delay":Validator.validate_delay}
+    def validate_play(self, args = None):
+        """Validates the play command.
+        """
+        # TODO: check if first thing is a sound or flag (maybe)
+        if not args:
+            return False
+        return True
+
+    commandDict = {"play":validation.validate_play,
+                   "rename":validation.validate_rename,
+                   "list_sounds":validation.validate_list_sounds,
+                   "add_sound":validation.validate_add_sound,
+                   "remove_sound":validation.validate_remove_sound,
+                   "delay":validation.validate_delay}
 
     def __init__(self):
         super().__init__()
         self.intro = "Command line interface for audio archive."
-        self.prompt = "input command: "
+        self.prompt = "\ninput command: "
         self.player = AudioPlayer(self)
-        self.validator = Validator(self)
         self.files = FileManager(self)
         # init sound editing file.
 
     def validate(self, inputType, args):
-        ret = True
         if inputType in self.commandDict.keys():
-            ret = self.commandDict[inputType](args)
-            return ret
+            validator = self.commandDict[inputType](args)
+            return validator
         else:
             print("That's not a recognized command! Type 'help' to view commands.")
             return False
