@@ -2,6 +2,7 @@
 # back to the function that called it and will throw an error message that's more 
 # useful to the user.
 
+
 def validate_play(args = None):
     """Validates the play command.
     Checks to see that the user passed arguments.
