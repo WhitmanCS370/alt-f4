@@ -8,6 +8,7 @@ import shutil
 
 from playsound import AudioPlayer
 from validation import Validator
+from filemanager import FileManager
 
 class main(cmd.Cmd):
 
@@ -24,9 +25,8 @@ class main(cmd.Cmd):
         self.prompt = "input command: "
         self.player = AudioPlayer(self)
         self.validator = Validator(self)
-        # init file manager (for file editing)
-        # init play module
-        # init out module
+        self.files = FileManager(self)
+        # init sound editing file.
 
     def validate(self, inputType, args):
         ret = True
@@ -79,9 +79,7 @@ class main(cmd.Cmd):
         usage) rename <original_file> <new_name>        
         """
         if(self.validate("rename", args)):
-            input = args.split(" ")
-            os.rename(input[0], input[1]) 
-            return
+            self.files.rename(args)
         else:
             self.do_help("rename")
 
@@ -90,23 +88,7 @@ class main(cmd.Cmd):
         usage) add_sound <folder_to_add_to> <path_to_original_file>
         """
         if(self.validate("add_sound", args)):
-            input = args.split(" ")
-            targetDirectory = path.Path(os.getcwd()).as_posix()+"/"+input[0]
-            sourcePath = path.Path(input[1]).resolve()
-
-            print(targetDirectory)
-            print(sourcePath)
-            
-            if not os.path.isdir(targetDirectory): 
-                print("Target directory not recognized.")
-            elif os.path.exists(os.path.join(targetDirectory, os.path.basename(input[1]))):
-                print("There alread exists a file in that location with that name. Please try again with another name.")
-            elif not os.path.exists(sourcePath):
-                print("Cannot recognize source sound file.")
-            else:
-                shutil.copy(sourcePath, targetDirectory)
-                pass
-            return
+            self.files.add_sound(args)
         else:
             self.do_help("add_sound")
 
@@ -116,13 +98,7 @@ class main(cmd.Cmd):
         """
         # TODO: implement validate_remove_sound in validation.py and make sure it works as intended
         if(self.validate("remove_sound", args)):
-            input = args.split(" ")
-            filePath = path.Path(input[0]).resolve()
-            if not os.path.exists(filePath):
-                print("Cannot recognize source file.")
-            else:
-                os.remove(filePath)
-            return
+            self.files.remove_sound(args)
         else:
             self.do_help("remove_sound")
 
@@ -132,13 +108,7 @@ class main(cmd.Cmd):
         """
 
         if(self.validate("list_sounds", args)):
-            input = args.split(" ")
-            folderPath = path.Path(os.getcwd()).as_posix()+"/"+input[0]
-            print(folderPath)
-
-            for file in os.listdir(folderPath):
-                if file.endswith(".wav"):      
-                    print(file)   
+            self.files.list_sounds(args) 
         else:
             self.do_help("list_sounds")
                 
