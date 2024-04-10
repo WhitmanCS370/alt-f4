@@ -6,14 +6,6 @@ from filemanager import FileManager
 
 class main(cmd.Cmd):
 
-    def validate_play(self, args = None):
-        """Validates the play command.
-        """
-        # TODO: check if first thing is a sound or flag (maybe)
-        if not args:
-            return False
-        return True
-
     commandDict = {"play":validation.validate_play,
                    "rename":validation.validate_rename,
                    "list_sounds":validation.validate_list_sounds,
