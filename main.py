@@ -1,10 +1,4 @@
 import cmd
-import simpleaudio
-import time
-import os
-import validation
-import pathlib as path
-import shutil
 
 from playsound import AudioPlayer
 from validation import Validator
@@ -53,14 +47,6 @@ class main(cmd.Cmd):
                 sounds.append(item)
 
         return flags, sounds, delay
-
-        for i, sound in enumerate(sounds):
-            if i > 0:                 # add delay as long as it's not the last sound.
-                time.sleep(float(delay))
-            wave_obj = simpleaudio.WaveObject.from_wave_file(f"{sound}.wav")
-            print(f'Playing {sound}')
-            play_obj = wave_obj.play()
-        play_obj.wait_done()
 
     def do_play(self, args):
         """Play sound(s), either all at once or sequentially (with or without delay).
