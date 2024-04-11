@@ -34,7 +34,7 @@ class main(cmd.Cmd):
             validator = self.commandDict[inputType](args)
             return validator
         else:
-            print("That's not a recognized command! Type 'help' to view commands.")
+            print(f"{inputType} is not a recognized command! Type 'help' to view commands.")
             return False
 
     def parse_play(self, input):
@@ -110,12 +110,11 @@ class main(cmd.Cmd):
         else:
             self.do_help("remove_sound")
 
-    def do_list_sounds(self, args = "sounds"):
+    def do_list_sounds(self, args):
         """List sounds in specified folder.
         Implementation handled in FileManager.
         usage) list_sounds <folder>
         """
-
         if(self.validate("list_sounds", args)):
             self.files.list_sounds(args) 
         else:
@@ -126,7 +125,6 @@ class main(cmd.Cmd):
         """ End the command line interface loop/program.
         usage) exit
         """
-        print("goodbye")
         return True
 
 if __name__ == "__main__":
