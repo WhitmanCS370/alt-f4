@@ -57,3 +57,12 @@ def validate_delay(args):
     if not args:
         return False
     return True
+
+def validate_merge(args):
+    """Validates the merge command.
+    Checks to see that the user passed arguments.
+    """
+    # TODO: implement
+    if not args:
+        return False
+    return True

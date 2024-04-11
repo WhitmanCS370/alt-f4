@@ -1,8 +1,9 @@
 import cmd
 
-from playsound import AudioPlayer
 import validation
+from playsound import AudioPlayer
 from filemanager import FileManager
+from effectsmanager import EffectManager
 
 class main(cmd.Cmd):
 
@@ -11,7 +12,8 @@ class main(cmd.Cmd):
                    "list_sounds":validation.validate_list_sounds,
                    "add_sound":validation.validate_add_sound,
                    "remove_sound":validation.validate_remove_sound,
-                   "delay":validation.validate_delay}
+                   "delay":validation.validate_delay,
+                   "merge":validation.validate_merge}
 
     def __init__(self):
         super().__init__()
@@ -19,6 +21,7 @@ class main(cmd.Cmd):
         self.prompt = "\ninput command: "
         self.player = AudioPlayer(self)
         self.files = FileManager(self)
+        self.effects = EffectManager(self)
         # init sound editing file.
 
     def validate(self, inputType, args):
@@ -69,7 +72,7 @@ class main(cmd.Cmd):
     def do_play(self, args):
         """Play sound(s), either all at once or sequentially (with or without delay).
         Implementation handled in AudioPlayer.
-        usage) play [multi|seq|delay={delaytime}] <file_name(s)>
+        usage) play [--multi|seq|delay={delaytime}] <file_name(s)>
         """
         # TODO: add error catching for if --delay=(something other than float)
         #       should actually add to some validation.
@@ -120,6 +123,17 @@ class main(cmd.Cmd):
         else:
             self.do_help("list_sounds")
                 
+    def do_merge(self, args):
+        """Merge sounds together (sequentially) into a single longer audio.
+        Implementation handled in EffectManager.
+        usage) merge <file_name(s)> [--out=<path_to_new_file>]
+        """
+        if(self.validate("merge", args)):
+            self.effects.merge(args)
+        else:
+            self.do_help("merge")
+        return
+
 
     def do_exit(self, args):
         """ End the command line interface loop/program.
