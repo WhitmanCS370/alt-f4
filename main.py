@@ -12,7 +12,6 @@ class main(cmd.Cmd):
                    "list_sounds":validation.validate_list_sounds,
                    "add_sound":validation.validate_add_sound,
                    "remove_sound":validation.validate_remove_sound,
-                   "delay":validation.validate_delay,
                    "merge":validation.validate_merge}
 
     def __init__(self):

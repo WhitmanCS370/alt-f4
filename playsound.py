@@ -12,9 +12,7 @@ class AudioPlayer():
         flags, sounds, delay = self.controller.parse_play(input)
         
         if delay:
-            if(self.controller.validate("delay",args)):
-                self.delay_play(sounds, delay)
-            return
+            self.delay_play(sounds, delay)
         elif "multi" in flags:
             self.multi_play(sounds) 
         elif "mute" in flags:
