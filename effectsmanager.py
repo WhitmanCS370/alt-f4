@@ -1,5 +1,7 @@
 from pydub import AudioSegment
 from pydub.playback import play
+import os
+import pathlib as path
 
 class EffectManager():
 
@@ -16,7 +18,7 @@ class EffectManager():
         pass
 
     def merge(self, args):
-        # thinking that any "out" sound name should have an --out flag, like --out=<filePathAndName>
+        # thinking that any "out" sound name should have an -out flag, like -out=<filePathAndName>
         input = args.split(" ")
         for i, item in enumerate(input):
             if i == 0:
@@ -28,6 +30,9 @@ class EffectManager():
         # play(merged)
         merged.export(out_f = "sounds/merged.wav", format = "wav") 
         self.controller.do_play("sounds/merged")
+
+        # if no out file specified, remove.
+        os.remove(path.Path("sounds/merged.wav").resolve())
 
     def reverse(self, args):
         pass

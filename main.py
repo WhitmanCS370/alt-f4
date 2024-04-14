@@ -57,12 +57,12 @@ class main(cmd.Cmd):
         delay = None
 
         for item in input:
-            if "--" in item:
-                if "--delay" in item:
+            if "-" in item:
+                if "-delay" in item:
                     delayCommand = item.split("=")
                     delay = delayCommand[1]
                 else:
-                    flags.append(item.replace("--",""))
+                    flags.append(item.replace("-",""))
             elif not item == '':
                 sounds.append(item)
 
@@ -71,7 +71,7 @@ class main(cmd.Cmd):
     def do_play(self, args):
         """Play sound(s), either all at once or sequentially (with or without delay).
         Implementation handled in AudioPlayer.
-        usage) play [--multi|seq|delay={delaytime}] <file_name(s)>
+        usage) play [-multi|-seq|-delay={delaytime}] <file_name(s)>
         """
         # TODO: add error catching for if --delay=(something other than float)
         #       should actually add to some validation.
@@ -125,7 +125,7 @@ class main(cmd.Cmd):
     def do_merge(self, args):
         """Merge sounds together (sequentially) into a single longer audio.
         Implementation handled in EffectManager.
-        usage) merge <file_name(s)> [--out=<path_to_new_file>]
+        usage) merge <file_name(s)> [-out=<path_to_new_file>]
         """
         if(self.validate("merge", args)):
             self.effects.merge(args)

@@ -4,6 +4,8 @@ import os
 # back to the function that called it and will throw an error message that's more 
 # useful to the user.
 
+validFlags = ["-multi", "-delay", "-mute", "-seq"]
+
 def arg_splitter(args):
     split = []
     input = args.split(" ")
@@ -24,13 +26,34 @@ def directory_validator(arg):
         return False
     return True
 
+def flag_check(arg):
+    """Check play command tags are valid.
+    Submethod of validate_play to compare inputted tags to tags we accept.
+    """
+    for flag in validFlags:
+        if flag in arg:
+            return True
+    return False
+
 def validate_play(args = None):
     """Validates the play command.
     Checks to see that the user passed arguments.
     """
+
     # TODO: check if first thing is a sound or flag (maybe)
+    input = arg_splitter(args)
+
     if not args:
         return False
+    for item in input:
+        if "-" in item:
+            if not flag_check(item):
+                print(f"Error: invalid flag '{item}' used.\n")
+                return False
+        else:
+            if not path_validator(f"{item}.wav"):
+                print(f"Error: audio file '{item}' cannot be found.\n")
+                return False
     return True
     
 def validate_rename(args):
