@@ -1,5 +1,7 @@
 import simpleaudio
 import time
+import random
+import os
 
 
 class AudioPlayer():
@@ -9,7 +11,7 @@ class AudioPlayer():
 
     def play(self,args):
         input = args.split(" ")
-        flags, sounds, delay = self.controller.parse_play(input)
+        flags, sounds, delay, folder = self.controller.parse_play(input)
         
         if delay:
             self.delay_play(sounds, delay)
@@ -17,7 +19,9 @@ class AudioPlayer():
             self.multi_play(sounds) 
         elif "mute" in flags:
             return
-        elif flags == [] or "seq" in flags:
+        elif "rand" in flags:
+            self.random_play(folder)
+        else:
             self.seq_play(sounds)
 
     def multi_play(self, sounds):
@@ -45,3 +49,15 @@ class AudioPlayer():
             print(f'Playing {sound}')
             play_obj = wave_obj.play()
         play_obj.wait_done()
+
+    def random_play(self, folder):
+        sound = random.choice(os.listdir(folder))
+        while not sound.endswith(".wav"):
+            sound = random.choice(os.listdir(folder))
+        print(f"playing {sound} from {folder}.")
+        playSound = f"{folder}/{sound}"
+        # self.controller.do_play(playSound)
+        wave_obj = simpleaudio.WaveObject.from_wave_file(f"{playSound}")
+        play_obj = wave_obj.play()
+        play_obj.wait_done()
+        

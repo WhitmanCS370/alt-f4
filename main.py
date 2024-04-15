@@ -55,6 +55,7 @@ class main(cmd.Cmd):
         flags = []
         sounds = []
         delay = None
+        folder = None
 
         for item in input:
             if "-" in item:
@@ -63,10 +64,12 @@ class main(cmd.Cmd):
                     delay = delayCommand[1]
                 else:
                     flags.append(item.replace("-",""))
-            elif not item == '':
+            elif validation.directory_validator(item):
+                folder = item
+            elif not item == '' and validation.path_validator(item):
                 sounds.append(item)
 
-        return flags, sounds, delay
+        return flags, sounds, delay, folder
 
     def do_play(self, args):
         """Play sound(s), either all at once or sequentially (with or without delay).

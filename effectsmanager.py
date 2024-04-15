@@ -12,27 +12,37 @@ class EffectManager():
         #self.parseInput()
         pass
 
-    def parseInput(self, args):
-        # loop through, split on = first, then _
-        # once we identify the name to call 
-        pass
+    def parse_merge(self, args):
+        input = args.split(" ")
+
+        sounds = []
+        out = None
+
+        for item in input:
+            if "-out" in item:
+                outCommand = item.split("=")
+                out = outCommand[1]
+            else:
+                sounds.append(item)
+        return sounds, out
 
     def merge(self, args):
         # thinking that any "out" sound name should have an -out flag, like -out=<filePathAndName>
-        input = args.split(" ")
-        for i, item in enumerate(input):
+        input = self.parse_merge(args)
+        for i, item in enumerate(input[0]):
             if i == 0:
                 merged = AudioSegment.from_file(f"{item}.wav", format="wav")
             else:
                 itemAudio = AudioSegment.from_file(f"{item}.wav", format="wav")
                 merged = merged + itemAudio
-        # print("Playing merged sounds.")
-        # play(merged)
-        merged.export(out_f = "sounds/merged.wav", format = "wav") 
-        self.controller.do_play("sounds/merged")
 
-        # if no out file specified, remove.
-        os.remove(path.Path("sounds/merged.wav").resolve())
+        merged.export(out_f = "merged.wav", format = "wav") 
+        self.controller.do_play("merged")
+
+        if input[1]:
+            self.controller.do_rename(f"merged.wav {input[1]}.wav")
+        else:
+            os.remove(path.Path("merged.wav").resolve())
 
     def reverse(self, args):
         pass
