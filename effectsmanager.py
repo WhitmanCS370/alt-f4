@@ -27,7 +27,8 @@ class EffectManager():
         return sounds, out
 
     def merge(self, args):
-        # thinking that any "out" sound name should have an -out flag, like -out=<filePathAndName>
+        """
+        """
         input = self.parse_merge(args)
         for i, item in enumerate(input[0]):
             if i == 0:
@@ -45,4 +46,6 @@ class EffectManager():
             os.remove(path.Path("merged.wav").resolve())
 
     def reverse(self, args):
+        """
+        """
         pass

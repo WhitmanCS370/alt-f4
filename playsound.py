@@ -10,9 +10,8 @@ class AudioPlayer():
         self.controller = controller
 
     def play(self,args):
-        input = args.split(" ")
-        flags, sounds, delay, folder = self.controller.parse_play(input)
-        
+        flags, sounds, delay, folder = self.controller.parse(args)
+
         if delay:
             self.delay_play(sounds, delay)
         elif "multi" in flags:
