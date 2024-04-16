@@ -7,8 +7,9 @@ import os
 validPlayFlags = ["-multi", "-delay", "-mute", "-seq", "-rand"]
 validRemoveFolderFlags = ["-empty", "-nonempty"]
 
-def arg_splitter(args):
+def _arg_splitter(args):
     """Split arguments.
+    Helper function.
     Splits arguments on spaces and removes unnecessary empty items.
     """
     split = []
@@ -20,6 +21,7 @@ def arg_splitter(args):
 
 def path_validator(arg):
     """Find if a file exists.
+    Helper function.
     Returns true if the argument is a file, false if it isn't.
     """
     testPath = path.Path(arg).resolve()
@@ -29,6 +31,7 @@ def path_validator(arg):
 
 def directory_validator(arg):
     """Find if a directory/folder exists.
+    Helper function.
     Returns true if the argument is a directory, false if it isn't.
     """
     directory = path.Path(os.getcwd()).as_posix()+"/"+arg
@@ -53,7 +56,7 @@ def validate_play(args = None):
     and in the list of acceptable flags. It also checks that all of the audio files
     to play are valid audio files that can be found (and not directories).
     """
-    input = arg_splitter(args)
+    input = _arg_splitter(args)
 
     if not args:
         return False
@@ -74,7 +77,7 @@ def validate_rename(args):
     is a valid, existing audio file and that the second argument is not a valid audio 
     file in order to avoid overlapping names.
     """
-    input = arg_splitter(args)
+    input = _arg_splitter(args)
 
     if len(input) == 2:
         if not path_validator(input[0]):
@@ -92,7 +95,7 @@ def validate_list_sounds(args):
     Checks to see that the user passed a single argument and that the argument
     is a valid directory.
     """
-    input = arg_splitter(args)
+    input = _arg_splitter(args)
     if len(input) == 1:
         if directory_validator(input[0]):
             return True
@@ -107,7 +110,7 @@ def validate_add_sound(args):
     added already exists in the target directory.
     """
     # TODO: implement, move validation stuff in the function to here.
-    input = arg_splitter(args)
+    input = _arg_splitter(args)
     if len(input) == 2:
         if not directory_validator(input[0]):
             print(f"Error: '{input[0]}' not recognized as a valid directory.\n")
@@ -126,8 +129,7 @@ def validate_remove_sound(args):
     Checks to see that the user passed a single argument and that the file to remove
     exists.
     """
-    # TODO: implement
-    input = arg_splitter(args)
+    input = _arg_splitter(args)
     if len(input) == 1:
         if not path_validator(input[0]):
             print(f"Error: Cannot recognize '{input[0]}', the sound file to remove.\n")
@@ -142,8 +144,7 @@ def validate_merge(args):
     flag, it checks that the out file doesn't already exist (and that there are
     no other flags).
     """
-    # TODO: check that sounds are valid
-    input = arg_splitter(args)
+    input = _arg_splitter(args)
     if not args:
         return False
     
@@ -156,6 +157,9 @@ def validate_merge(args):
                 if path_validator(f"{outName}.wav"):
                     print("Error: Cannot save a file when a file with the same name exists. \n")
                     return False
+        elif not path_validator(f"{item}.wav"):
+            print(f"Error: '{item}' is not a valid audio file. \n")
+            return False
     return True
 
 def validate_new_folder(args):
@@ -163,7 +167,7 @@ def validate_new_folder(args):
     Checks that the input is a single argument and that it
     isn't already a directory.
     """
-    input = arg_splitter(args)
+    input = _arg_splitter(args)
     if len(input) == 1:
         if directory_validator(input[0]):
             print(f"Error: Folder '{input[0]}' already exists. \n")
@@ -177,11 +181,12 @@ def validate_remove_folder(args):
     and there can be only one. If there's a flag, there can be only one
     and it has to be in the list of valid flags.
     """
-    input = arg_splitter(args)
+    input = _arg_splitter(args)
 
     if not args:
         return False
     
+    # if there's one input, it must be an empty folder.
     if len(input) == 1:
         if not directory_validator(input[0]):
             print(f"Error: Folder '{input[0]}' doesn't exist. \n")
@@ -191,6 +196,8 @@ def validate_remove_folder(args):
             return False
         return True
 
+    # if there's two input, the first must be a flag and the second must be a folder.
+    # if the '-empty' flag is used, then the folder to remove must be empty.
     elif len(input) == 2:
         if ("-" in input[0]) and not flag_check(input[0], validRemoveFolderFlags):
             print(f"Error: Invalid flag '{input[0]}' used.\n")
@@ -209,8 +216,8 @@ def validate_list_folders(args):
     """Validates the list_folders command.
     Checks that no arguments are passed.
     """
-    # TODO: make this validation better, must be other cases to return false.
-    input = arg_splitter(args)
+    # TODO: make this validation better.
+    input = _arg_splitter(args)
     if len(input) > 1:
         return False
     return True
