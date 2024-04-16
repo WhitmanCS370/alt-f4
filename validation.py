@@ -178,34 +178,32 @@ def validate_remove_folder(args):
     and it has to be in the list of valid flags.
     """
     input = arg_splitter(args)
-    flag = False
-    folder = False 
 
     if not args:
         return False
     
-    for item in input:
-        if "-" in item and len(input) == 2:
-            if not flag_check(item, validRemoveFolderFlags):
-                print(f"Error: Invalid flag '{item}' used.\n")
-                return False
-            if flag:
-                print("Error: remove_folder only works with one flag at a time. \n")
-                return False
-            flag = True
-        elif len(input) <= 2:
-            if folder:
-                print("Error: remove_folder only works with one folder at a time. \n")
-                return False
-            if not directory_validator(item):
-                print(f"Error: Folder '{item}' doesn't exist. \n")
-                return False
-            else:
-                folder = True
-        else:
-            print("Error: Incorrect number of arguments passed. \n")
+    if len(input) == 1:
+        if not directory_validator(input[0]):
+            print(f"Error: Folder '{input[0]}' doesn't exist. \n")
             return False
-    return True
+        elif len(os.listdir(input[0])) > 0:
+            print(f"{input[0]} isn't empty. Type 'remove_folder -nonempty {input[0]}' to remove.")
+            return False
+        return True
+
+    elif len(input) == 2:
+        if ("-" in input[0]) and not flag_check(input[0], validRemoveFolderFlags):
+            print(f"Error: Invalid flag '{input[0]}' used.\n")
+            return False
+        elif not directory_validator(input[1]):
+            print(f"Error: Folder '{input[1]}' doesn't exist. \n")
+            return False
+        elif input[0] == "-empty" and (len(os.listdir(input[1])) > 0):
+            print(f"{input[1]} isn't empty. Type 'remove_folder -nonempty {input[1]}' to remove.")
+            return False
+        
+    print("Error: Too many arguments passed. \n")
+    return False
 
 def validate_list_folders(args):
     """Validates the list_folders command.

@@ -32,14 +32,16 @@ class FileManager():
 
     def new_folder(self, args):
         """Make new folder.
+        Uses os library to make a new folder/directory with a provided name.
         """
         input = args.split(" ")
         os.mkdir(input[0])
 
     def list_folders(self, args):
         """List folders in current working directory.
+
         """
-        # TODO: currently prints not audio folders, idk how to fix it easily.
+        # TODO: currently prints all folders, should only print folders with audio file.
         for item in os.listdir(os.getcwd()):
             if os.path.isdir(item):
                 print(f"{item}")
@@ -47,20 +49,18 @@ class FileManager():
 
     def remove_folder(self, args):
         """Remove existing folder.
+        
         """
         # TODO: can handle differently. if user deletes nonempty folder, can make a trash folder
         # that keeps all sounds from deleted folders and auto-deletes on exit.
         flags, sounds, delay, folder = self.controller.parse(args)
-
+        
         if sounds or delay:
             print("Error: remove_folder doesn't work with sounds or delay.")
             return
-        elif "empty" in flags:
-            try:
-                os.rmdir(folder)
-                print(f"{folder} removed.")
-            except:
-                print(f"{folder} isn't empty. Type 'remove_folder -nonempty {folder}' to remove.")
         elif "nonempty" in flags:
             shutil.rmtree(folder)
+            print(f"{folder} removed.")
+        elif "empty" in flags or (flags == []):
+            os.rmdir(folder)
             print(f"{folder} removed.")
