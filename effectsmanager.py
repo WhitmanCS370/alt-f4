@@ -22,7 +22,7 @@ class EffectManager():
             if "-out" in item:
                 outCommand = item.split("=")
                 out = outCommand[1]
-            else:
+            elif not item =='':
                 sounds.append(item)
         return sounds, out
 

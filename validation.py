@@ -209,6 +209,7 @@ def validate_remove_folder(args):
 
 def validate_list_folders(args):
     """Validates the list_folders command.
+    Checks that no arguments are passed.
     """
     # TODO: make this validation better, must be other cases to return false.
     input = arg_splitter(args)
