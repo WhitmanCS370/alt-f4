@@ -1,8 +1,9 @@
 import cmd
 
-from playsound import AudioPlayer
 import validation
+from playsound import AudioPlayer
 from filemanager import FileManager
+from effectsmanager import EffectManager
 
 class main(cmd.Cmd):
 
@@ -11,7 +12,7 @@ class main(cmd.Cmd):
                    "list_sounds":validation.validate_list_sounds,
                    "add_sound":validation.validate_add_sound,
                    "remove_sound":validation.validate_remove_sound,
-                   "delay":validation.validate_delay}
+                   "merge":validation.validate_merge}
 
     def __init__(self):
         super().__init__()
@@ -19,6 +20,7 @@ class main(cmd.Cmd):
         self.prompt = "\ninput command: "
         self.player = AudioPlayer(self)
         self.files = FileManager(self)
+        self.effects = EffectManager(self)
         # init sound editing file.
 
     def validate(self, inputType, args):
@@ -34,7 +36,7 @@ class main(cmd.Cmd):
             validator = self.commandDict[inputType](args)
             return validator
         else:
-            print("That's not a recognized command! Type 'help' to view commands.")
+            print(f"{inputType} is not a recognized command! Type 'help' to view commands.")
             return False
 
     def parse_play(self, input):
@@ -53,23 +55,26 @@ class main(cmd.Cmd):
         flags = []
         sounds = []
         delay = None
+        folder = None
 
         for item in input:
-            if "--" in item:
-                if "--delay" in item:
+            if "-" in item:
+                if "-delay" in item:
                     delayCommand = item.split("=")
                     delay = delayCommand[1]
                 else:
-                    flags.append(item.replace("--",""))
-            elif not item == '':
+                    flags.append(item.replace("-",""))
+            elif validation.directory_validator(item):
+                folder = item
+            elif not item == '' and validation.path_validator(item):
                 sounds.append(item)
 
-        return flags, sounds, delay
+        return flags, sounds, delay, folder
 
     def do_play(self, args):
         """Play sound(s), either all at once or sequentially (with or without delay).
         Implementation handled in AudioPlayer.
-        usage) play [multi|seq|delay={delaytime}] <file_name(s)>
+        usage) play [-multi|-seq|-delay={delaytime}] <file_name(s)>
         """
         # TODO: add error catching for if --delay=(something other than float)
         #       should actually add to some validation.
@@ -110,23 +115,32 @@ class main(cmd.Cmd):
         else:
             self.do_help("remove_sound")
 
-    def do_list_sounds(self, args = "sounds"):
+    def do_list_sounds(self, args):
         """List sounds in specified folder.
         Implementation handled in FileManager.
         usage) list_sounds <folder>
         """
-
         if(self.validate("list_sounds", args)):
             self.files.list_sounds(args) 
         else:
             self.do_help("list_sounds")
                 
+    def do_merge(self, args):
+        """Merge sounds together (sequentially) into a single longer audio.
+        Implementation handled in EffectManager.
+        usage) merge <file_name(s)> [-out=<path_to_new_file>]
+        """
+        if(self.validate("merge", args)):
+            self.effects.merge(args)
+        else:
+            self.do_help("merge")
+        return
+
 
     def do_exit(self, args):
         """ End the command line interface loop/program.
         usage) exit
         """
-        print("goodbye")
         return True
 
 if __name__ == "__main__":
