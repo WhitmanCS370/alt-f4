@@ -15,7 +15,8 @@ class main(cmd.Cmd):
                    "merge":validation.validate_merge,
                    "new_folder":validation.validate_new_folder,
                    "remove_folder":validation.validate_remove_folder,
-                   "list_folders":validation.validate_list_folders}
+                   "list_folders":validation.validate_list_folders,
+                   "trim_sound":validation.validate_trim_sound}
 
     def __init__(self):
         super().__init__()
@@ -170,7 +171,16 @@ class main(cmd.Cmd):
         else:
             self.do_help("merge")
         return
-
+    
+    def do_trim_sound(self, args):
+        """Change the size of a sound file.
+        Implementation handled in EffectManager.
+        usage: trim_sound <file_name> <start_time(sec)> <end_time(sec)> [-out=<path_to_new_file>]"""
+        if(self.validate("trim_sound", args)):
+            self.effects.trim_sound(args)
+        else:
+            self.do_help("trim_sound")
+        return
 
     def do_exit(self, args):
         """ End the command line interface loop/program.
