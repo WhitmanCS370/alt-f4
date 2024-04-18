@@ -2,6 +2,7 @@ from pydub import AudioSegment
 from pydub.playback import play
 import os
 import pathlib as path
+import wave
 
 class EffectManager():
 
@@ -49,3 +50,38 @@ class EffectManager():
         """
         """
         pass
+
+    def parse_trim_sound(self, args):
+        input = args.split(" ")
+        out = None
+
+        
+        if (len(input) == 4) and ("-out" in input[3]):
+            outCommand = input[3].split("=")
+            out = outCommand[1]
+            sound = input[0]
+            start_time = input[1]
+            end_time = input[2]
+            return sound, start_time, end_time, out
+        else:
+            sound = input[0]
+            start_time = input[1]
+            end_time = input[2]
+            return sound, start_time, end_time
+    
+    def sec_to_millisecond(self, seconds):
+        return seconds * 1000
+
+    def trim_sound(self, args):
+        """ trim a sound to a new length"""
+        input = self.parse_trim_sound(args)
+        sound_mp3 = AudioSegment.from_wav(f"{input[0]}.wav")
+        trimmed_sound = sound_mp3[float(input[1])*1000:float(input[2])*1000]
+        trimmed_sound.export(out_f = "trimmed.wav", format = "wav") 
+        self.controller.do_play("trimmed")
+
+        if len(input) == 4:
+            self.controller.do_rename(f"trimmed.wav {input[3]}.wav")
+        else:
+            os.remove(path.Path("trimmed.wav").resolve())
+       
