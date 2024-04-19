@@ -231,4 +231,22 @@ def validate_trim_sound(args):
     if len(input) > 4 or len(input) < 2:
         print("Please enter a sound, a start time (in seconds), an end time (in seconds), and optionally a name to save new file")
         return False
+    for item in input:
+        if item < 0:
+            print("Please enter positive start and end times.")
+            return False
+    if input[1] < input[2]:
+        print("Please enter a start time less than the end time.")
+        return False
+    return True
+
+def validate_reverse(args):
+    """Validates the reverse command.
+    """
+    input = _arg_splitter(args)
+    if not args:
+        return False
+    if len(input) > 2:
+        print("Please enter a sound and optionally a new sound file name")
+        return False
     return True
