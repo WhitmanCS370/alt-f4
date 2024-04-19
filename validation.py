@@ -219,13 +219,14 @@ def validate_list_folders(args):
     # TODO: make this validation better.
     input = _arg_splitter(args)
     if len(input) > 1:
+        print("Error: list_folders takes no arguments. \n")
         return False
     return True
 
 def validate_trim_sound(args):
     """Validates the trim_sound command.
     """
-    input = arg_splitter(args)
+    input = _arg_splitter(args)
     if len(input) > 4 or len(input) < 2:
         print("Please enter a sound, a start time (in seconds), an end time (in seconds), and optionally a name to save new file")
         return False
