@@ -16,7 +16,8 @@ class main(cmd.Cmd):
                    "new_folder":validation.validate_new_folder,
                    "remove_folder":validation.validate_remove_folder,
                    "list_folders":validation.validate_list_folders,
-                   "trim_sound":validation.validate_trim_sound}
+                   "trim_sound":validation.validate_trim_sound,
+                   "reverse":validation.validate_reverse}
 
     def __init__(self):
         super().__init__()
@@ -180,6 +181,16 @@ class main(cmd.Cmd):
             self.effects.trim_sound(args)
         else:
             self.do_help("trim_sound")
+        return
+    
+    def do_reverse(self, args):
+        """Reverse the playback direction of a sound.
+        Implementation handled in EffectManager.
+        usage: reverse <file_name> [-out=<path_to_new_file>]"""
+        if(self.validate("reverse", args)):
+            self.effects.reverse(args)
+        else:
+            self.do_help("reverse")
         return
 
     def do_exit(self, args):

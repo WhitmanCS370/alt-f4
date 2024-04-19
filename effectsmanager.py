@@ -2,7 +2,6 @@ from pydub import AudioSegment
 from pydub.playback import play
 import os
 import pathlib as path
-import wave
 
 class EffectManager():
 
@@ -46,10 +45,33 @@ class EffectManager():
         else:
             os.remove(path.Path("merged.wav").resolve())
 
+    def parse_reverse(self, args):
+        input = args.split(" ")
+        out = None
+
+        
+        if (len(input) == 2) and ("-out" in input[1]):
+            outCommand = input[1].split("=")
+            out = outCommand[1]
+            sound = input[0]
+            return sound, out
+        else:
+            sound = input[0]
+            return sound, out
+
     def reverse(self, args):
         """
         """
-        pass
+        input = self.parse_reverse(args)
+        sound = AudioSegment.from_wav(f"{input[0]}.wav")
+        reversed_sound = sound.reverse()
+        reversed_sound.export("reversed.wav", format="wav")
+        self.controller.do_play("reversed")
+        if input[1] != None:
+            self.controller.do_rename(f"reversed.wav {input[1]}.wav")
+        else:
+            os.remove(path.Path("reversed.wav").resolve())
+        
 
     def parse_trim_sound(self, args):
         input = args.split(" ")
