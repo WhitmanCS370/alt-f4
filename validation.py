@@ -208,6 +208,7 @@ def validate_remove_folder(args):
         elif input[0] == "-empty" and (len(os.listdir(input[1])) > 0):
             print(f"{input[1]} isn't empty. Type 'remove_folder -nonempty {input[1]}' to remove.")
             return False
+        return True
         
     print("Error: Too many arguments passed. \n")
     return False
