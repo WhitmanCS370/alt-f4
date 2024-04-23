@@ -7,9 +7,6 @@ class EffectManager():
 
     def __init__(self, controller):
         self.controller = controller
-        # if input-merge in list, do it first
-        # for the rest, do it there
-        #self.parseInput()
         pass
 
     def parse_merge(self, args):
@@ -49,7 +46,6 @@ class EffectManager():
         input = args.split(" ")
         out = None
 
-        
         if (len(input) == 2) and ("-out" in input[1]):
             outCommand = input[1].split("=")
             out = outCommand[1]
@@ -76,7 +72,6 @@ class EffectManager():
     def parse_trim_sound(self, args):
         input = args.split(" ")
         out = None
-
         
         if (len(input) == 4) and ("-out" in input[3]):
             outCommand = input[3].split("=")

@@ -142,12 +142,10 @@ class main(cmd.Cmd):
 
     def do_list_folders(self, args):
         """List folders in specified folder.
-
+        usage) list_folders [folder_name]
         """
         # TODO: only list folders that have audio files.
         if(self.validate("list_folders",args)):
-            if not args:
-                args = f"{os.getcwd}"
             self.files.list_folders(args)
         else:
             self.do_help("list_folders")
