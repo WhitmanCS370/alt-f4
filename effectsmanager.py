@@ -87,6 +87,8 @@ class EffectManager():
             return sound, start_time, end_time
     
     def sec_to_millisecond(self, seconds):
+        """
+        """
         return seconds * 1000
 
     def trim_sound(self, args):

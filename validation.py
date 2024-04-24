@@ -29,6 +29,20 @@ def path_validator(arg):
         return False
     return True
 
+def has_audio_files(arg):
+    """Return if a folder has an audio file.
+    Returns false if the folder is empty or if it doesn't have any .wav files.
+    Returns true if the folder has at least one .wav file.
+    """
+    directory = path.Path(os.getcwd()).as_posix()+"/"+arg
+
+    if len(os.listdir(directory)) == 0:
+        return False
+    for file in directory:
+        if file.endswith(".wav"):      
+            return True  
+    return False
+
 def directory_validator(arg):
     """Find if a directory/folder exists.
     Helper function.
@@ -66,6 +80,9 @@ def validate_play(args = None):
                 print(f"Error: invalid flag '{item}' used.\n")
                 return False
         else:
+            if directory_validator(item) and not has_audio_files(item):
+                print(f"Error: folder '{item}' doesn't contain any audio files. \n")
+                return False
             if not path_validator(f"{item}.wav") and not directory_validator(item):
                 print(f"Error: audio file '{item}' cannot be found.\n")
                 return False
