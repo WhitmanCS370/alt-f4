@@ -82,8 +82,6 @@ class main(cmd.Cmd):
         Implementation handled in AudioPlayer.
         usage) play [-multi|-seq|-rand|-delay={delaytime}] <file_name(s)>
         """
-        # TODO: add error catching for if --delay=(something other than float)
-        #       should actually add to some validation.
     
         if(self.validate("play", args)):
             self.player.play(args)
@@ -134,7 +132,6 @@ class main(cmd.Cmd):
         Implementation handled in FileManager.
         usage) list_sounds <folder>
         """
-        #TODO: add an -all tag that finds all sounds and lists them together w/ {folder}/{sound} structure
         if(self.validate("list_sounds", args)):
             self.files.list_sounds(args) 
         else:
@@ -144,7 +141,6 @@ class main(cmd.Cmd):
         """List folders in specified folder.
         usage) list_folders [folder_name]
         """
-        # TODO: only list folders that have audio files.
         if(self.validate("list_folders",args)):
             self.files.list_folders(args)
         else:
@@ -154,7 +150,6 @@ class main(cmd.Cmd):
         """Remove specified folder
         usage) remove_folder [-empty|-nonempty] <folder_to_remove>
         """
-        # TODO: only list folders that have audio files.
         if(self.validate("remove_folder",args)):
             self.files.remove_folder(args)
         else:
@@ -200,9 +195,3 @@ class main(cmd.Cmd):
 if __name__ == "__main__":
     CLI_interface = main()
     CLI_interface.cmdloop()
-
-
-    # if (self.validate_single_arg(args)):
-        #     self.audio.play(args)
-        # else:
-        #     self.provide_arg_msg()
