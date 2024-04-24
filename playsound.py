@@ -63,7 +63,8 @@ class AudioPlayer():
         """
         print(f"Playing with {delay} seconds of delay.")
         for i, sound in enumerate(sounds):
-            if i > 0:                 # add delay as long as it's not the last sound.
+            # add delay before as long as it's not the first sound
+            if i > 0:    
                 time.sleep(float(delay))
             wave_obj = simpleaudio.WaveObject.from_wave_file(f"{sound}.wav")
             print(f'Playing {sound}')
@@ -71,10 +72,12 @@ class AudioPlayer():
         play_obj.wait_done()
 
     def random_play(self, folder):
-        # TODO: let users pick the number of sounds to randomly play.
         """Play a random sound from a given folder.
         Called by play() when the -rand flag is used. Plays a single sound from the
         folder.
+
+        possible extensions: allow users to pick the number of sounds to randomly
+        play. let users play all sounds in a folder in (random) order.
         """
         sound = random.choice(os.listdir(folder))
         while not sound.endswith(".wav"):

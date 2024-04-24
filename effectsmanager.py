@@ -87,7 +87,7 @@ class EffectManager():
             return sound, start_time, end_time
     
     def sec_to_millisecond(self, seconds):
-        """
+        """Convert seconds to milliseconds.
         """
         return seconds * 1000
 
@@ -105,6 +105,8 @@ class EffectManager():
             os.remove(path.Path("trimmed.wav").resolve())
 
     def parse_find_length(self, args):
+        """
+        """
         input = args.split(" ")
         sound = input[0]
         return sound
