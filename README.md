@@ -2,13 +2,13 @@
 Sams' Team
 
 #### Group Members
-- Jack Allard: rename sounds, single sound playback.
-- Jacob Burrill: list available sounds (of default 'sounds' directory and specified directories.
-- Coden Stark: help menu update (lists the available commands), commented the code, shortened the sequential sounds play function, added delay sound to sequential play (and first arg checks)
-- Sam Boerner: simultaneous sounds playback.
+- Jack Allard
+- Jacob Burrill
+- Coden Stark
+- Sam Boerner
 
 # How to use
-To use our program, open the command line, navigate to the directory in which the playCLI.py file is located, and run `python playCLI.py`. This displays a help menu that lists all current functionality and how to use each. To play sound, run `python playCLI.py -p [sound-directory/sound-file.wav]`. If multiple sound files are used as arguments when calling `-p`, then the sounds play concurrently. To play sounds sequentially, run `python playCLI.py -s [optional delay] [sound-directory/sound-file.wav]...`. Our project currently has two built-in sound directories, the default 'sounds' directory and the 'minecraft_sounds' directory (the sounds in each can be seen by calling `python playCLI.py -ls [directory-name]`). To rename a sound, run `python playCLI.py -r [original-file] [new-name]`.
+To use our program, open the command line, navigate to the directory in which the main.py file is located, and run `python main.py`. Run `help` to display a help menu that lists all current functionality and how to use each. To play sound, run `play <sound-directory/sound-file>`. To play multiple sounds in various ways, run `play [-multi|-seq|-rand|-delay={delaytime}] <file_name(s)>`. Our project currently has one built-in sound directory, the 'minecraft_sounds' directory. More folders can be added by running `new_folder <folder_name>` (the sounds in each existing folder each can be seen by calling `list_sounds [directory-name]`). To rename a sound, run `rename <original-file> <new-name>`. Our program also implements an editing functionality with several possible edits: trim_sound, merge, and reverse. To see usage run `help <command>`.  
 
 # Epoch 1
 
@@ -17,21 +17,23 @@ Most of our challenges stemmed from trying to use GitHub. Our group experienced 
 
 Outside of issues with trying to write code in the first place, our biggest hurdle while programming was deciding how to deal with the different variations of the play command. A user should be able to play a single sound, play multiple sounds concurrently, and play multiple sounds sequentially. As we divided the work to tackle different functionality all at once, playing concurrently and sequentially were done using the same tag. When we were ready to put everything together, we needed to decide how the app should work (which function should be default and which should use a new flag).
 
+# Epoch 2 
+
+#### Challenges
+Perhaps the biggest step we took in Epoch 2 was a complete refactor of the project. This came with all sorts of challenges as most of our original code had to be tweaked in order to function properly with our new structure. A challenge we had with implementing the edit features is the tremendous amount of exceptions that could arise when a user attempts to call a command. In order to counteract these exceptions, we added validation methods that validate the commands entered by the user. These methods check the syntax of entered commands and direct the user to correct the usage if an error is thrown. 
+
+# Epoch 3
+
 #### Future modifications/changes
-The most obvious modification would be allowing our app to function with sound files of different file types. Our program works well for .wav files, but only for .wav files. If we want an app that can act as an audio archive, then it needs to accept a wider range of audio file types in order to capture/use a wider range of sounds from the user's life. We have a place to add file extensions when we can use them, but the functions we use to play sound only work with .wav files.
-Adding sound editing is an upcoming issue, and might demand some changes in base functionality. We'll probably need to add functionality that allows for sound saving. The play functions might also need to take more arguments (like what sound modifications and on which sounds), but how we decide to implement sound edits plays a big role in the change we'll need to make.
+ 1. Add a GUI to increase usability and enjoyability of user. 
+ 2. Add metdata/tagging functionality to make sorting and filtering sounds possible. This would greatly increase ease of use and strengthen the capabilities of the program.
+ 3. TEST TEST TEST - write concrete test cases
 
 #### Testing
-Most of our testing was done by mimicing users. We called different functions using the command line arguments specified in the help menu and checked to make sure they had the intended effect. For renaming, we visually confirmed in our files that the original document no longer existed but a file of the new name had the same audio associated with it. Playing sounds was easier to check as there was audio associated with success (although it was occasionally hard to tell if all the sounds were playing when we called them to play concurrently). We tested edge cases and got out-of-bounds errors (that we fixed) due to the ordering of checks in some of our functions. Before getting too far into the next epoch, we need to write concrete test cases to ensure that we don't lose any of our current functionality when moving forward.
+Most of our testing was done by mimicing users. We called different functions using the command line arguments specified in the help menu and checked to make sure they had the intended effect. For renaming, we visually confirmed in our files that the original document no longer existed but a file of the new name had the same audio associated with it. Playing sounds was easier to check as there was audio associated with success (although it was occasionally hard to tell if all the sounds were playing when we called them to play concurrently). We tested edge cases and got out-of-bounds errors (that we fixed) due to the ordering of checks in some of our functions. We still need to write concrete test cases to ensure that we don't lose any of our current functionality when moving forward. 
 
-More recent additions to testing include checking the type of the first argument in the `-play` and `-sequence` commands. While it would be worthwile to check if the arguments are normally within the available sounds, checking for numbers makes it easier to implement the delay functionality.
-
-
-## Check-in 2-2
-So far, we have implemented a simple CLI that is able to play an audio file which is passed in as an argument through the command line.
-
-### Use cases/User stories
-https://docs.google.com/document/d/1Bvmg0npipdcdK8qbS1LAFQIgXJsy3d2tt_Xbh7vTE2g/edit
+### Use cases for epoch 2
+https://docs.google.com/document/d/1jVy2usLuIfONpKf52ehIbkFX4-a30FGDG3DknKEAECw/edit 
 
 ### New architecture specifications
 https://docs.google.com/document/d/e/2PACX-1vSPnYQpgqhx5gYlePdWDlQ6_wK9AGMG9exWWu7vxbkf8pdi0E2Myf2Pgi-RcGGALU7CGyCEryk2gdDc/pub
