@@ -17,7 +17,8 @@ class main(cmd.Cmd):
                    "remove_folder":validation.validate_remove_folder,
                    "list_folders":validation.validate_list_folders,
                    "trim_sound":validation.validate_trim_sound,
-                   "reverse":validation.validate_reverse}
+                   "reverse":validation.validate_reverse,
+                   "find_length":validation.validate_find_length}
 
     def __init__(self):
         super().__init__()
@@ -191,6 +192,16 @@ class main(cmd.Cmd):
             self.effects.reverse(args)
         else:
             self.do_help("reverse")
+        return
+    
+    def do_find_length(self, args):
+        """Finds the length of a sound in seconds. Helper function to trim_sound.
+        Implementation handled in EffectManager.
+        usage: find_length <file_name>"""
+        if(self.validate("find_length", args)):
+            self.effects.find_length(args)
+        else:
+            self.do_help("find_length")
         return
 
     def do_exit(self, args):

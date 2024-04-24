@@ -244,3 +244,14 @@ def validate_reverse(args):
         print("Please enter a sound and optionally a new sound file name")
         return False
     return True
+
+def validate_find_length(args):
+    """Validates the find_length command.
+    """
+    input = arg_splitter(args)
+    if not args:
+        return False
+    if len(input) > 2:
+        print("Please enter a sound.")
+        return False
+    return True

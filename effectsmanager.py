@@ -106,4 +106,17 @@ class EffectManager():
             self.controller.do_rename(f"trimmed.wav {input[3]}.wav")
         else:
             os.remove(path.Path("trimmed.wav").resolve())
+
+    def parse_find_length(self, args):
+        input = args.split(" ")
+        sound = input[0]
+        return sound
+    
+    def find_length(self, args):
+        """Find the length of a sound file"""
+        input = self.parse_find_length(args)
+        sound = AudioSegment.from_wav(f"{input}.wav")
+        length = len(sound)
+        length_seconds = length / 1000
+        print(length_seconds)
        
