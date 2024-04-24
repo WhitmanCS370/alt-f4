@@ -277,7 +277,7 @@ def validate_reverse(args):
 def validate_find_length(args):
     """Validates the find_length command.
     """
-    input = arg_splitter(args)
+    input = _arg_splitter(args)
     if not args:
         return False
     if len(input) > 2:
