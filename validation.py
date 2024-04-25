@@ -54,7 +54,7 @@ def is_valid_out(arg):
     exists.
     Returns true otherwise.
     """
-    if not "-out" in arg:
+    if not "-out=" in arg:
         print(f"Error: '{arg}' not recognized for this function. Please use '-out=<path_to_new_file>. \n")
         return False
     outName = arg.split("=")[1]
@@ -97,9 +97,11 @@ def is_valid_new_sound(arg):
     """
     # split at the / and makes sure the stuff before the end is a valid directory.
     outPath = arg.split("=")[-1]
-    argSplit = outPath.rsplit("/", 1)[-2]
-    print(f"precursor: {argSplit}")
-    return is_valid_directory(argSplit)
+    if not "/" in outPath:
+        return True
+    else:
+        outDirectory = outPath.rsplit("/", 1)[-2]
+        return is_valid_directory(outDirectory)
 
 
 

@@ -57,8 +57,9 @@ class FileManager():
     def list_folders(self, args):
         """List folders in current working directory.
         Prints the name of all folders.
+
+        potential extension: should only print folders with audio file (currently prints all folders).
         """
-        # TODO: currently prints all folders, should only print folders with audio file.
         currentFolder = os.listdir(os.getcwd())
         if args:
             currentFolder = os.listdir(path.Path(os.getcwd()).as_posix()+"/"+args)
@@ -74,8 +75,6 @@ class FileManager():
         folders and the -nonempty flag allows the user to remove non-empty
         folders.
         """
-        # TODO: can handle differently. if user deletes nonempty folder, can make a trash folder
-        # that keeps all sounds from deleted folders and auto-deletes on exit.
         flags, sounds, delay, folder = self.controller.parse(args)
         
         if sounds or delay:
@@ -87,18 +86,13 @@ class FileManager():
         elif "empty" in flags or (flags == []):
             os.rmdir(folder)
             print(f"{folder} removed.")
-
-    def parse_find_length(self, args):
-        """
-        """
-        input = args.split(" ")
-        sound = input[0]
-        return sound
     
     def find_length(self, args):
-        """Find the length of a sound file"""
-        input = self.parse_find_length(args)
-        sound = AudioSegment.from_wav(f"{input}.wav")
+        """Find the length of a sound file.
+        Prints the number of seconds a sound plays for.
+        """
+        input = args.split(" ")
+        sound = AudioSegment.from_wav(f"{input[0]}.wav")
         length = len(sound)
         length_seconds = length / 1000
         print(f"{length_seconds} seconds")
