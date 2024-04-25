@@ -66,11 +66,29 @@ class EffectManager():
 
         return sound, start_time, end_time, out
         
+    def play_save_temp_audio(self, func, audio, outFile):
+        """ File management for edited sounds.
+        Helper function.
+        The edited sound is exported and played. If the user specified an -out,
+        then the temp sound is renamed into a permanent file. If no -out is
+        specified, then the sound isn't saved and the temp file is deleted.
+        """
+        audio.export(out_f = f"{func}.wav", format = "wav") 
+        self.controller.do_play(f"{func}")
+        if outFile:
+            self.controller.do_rename(f"{func}.wav {outFile}.wav")
+        else:
+            os.remove(path.Path(f"{func}.wav").resolve())
+
 
     ### Functionality implementation
 
     def merge(self, args):
-        """
+        """ Merge audio files together sequentially.
+        Merges 1+ audio files (of type .wav) together sequentially and plays
+        the combined sound back to the user. If the function is called with an
+        -out flag, then the merged sound can be played without having to re-merge
+        the sounds.
         """
         input = self.parse_merge(args)
         for i, item in enumerate(input[0]):
@@ -80,26 +98,19 @@ class EffectManager():
                 itemAudio = AudioSegment.from_file(f"{item}.wav", format="wav")
                 merged = merged + itemAudio
 
-        merged.export(out_f = "merged.wav", format = "wav") 
-        self.controller.do_play("merged")
-
-        if input[1]:
-            self.controller.do_rename(f"merged.wav {input[1]}.wav")
-        else:
-            os.remove(path.Path("merged.wav").resolve())
+        self.play_save_temp_audio("merge", merged, input[1])
 
     def reverse(self, args):
-        """
+        """ Reverse a sound.
+        Reverses the audio file passed by the user and plays the sound. If the
+        user specified an -out destination, then the reversed audio file is saved
+        there.
         """
         input = self.parse_reverse(args)
         sound = AudioSegment.from_wav(f"{input[0]}.wav")
         reversed_sound = sound.reverse()
-        reversed_sound.export("reversed.wav", format="wav")
-        self.controller.do_play("reversed")
-        if input[1] != None:
-            self.controller.do_rename(f"reversed.wav {input[1]}.wav")
-        else:
-            os.remove(path.Path("reversed.wav").resolve())
+
+        self.play_save_temp_audio("reversed", reversed_sound, input[1])
 
     def trim_sound(self, args):
         """ Trim a sound to a new length.
@@ -110,11 +121,6 @@ class EffectManager():
         input = self.parse_trim_sound(args)
         sound_mp3 = AudioSegment.from_wav(f"{input[0]}.wav")
         trimmed_sound = sound_mp3[float(input[1])*1000:float(input[2])*1000]
-        trimmed_sound.export(out_f = "trimmed.wav", format = "wav") 
-        self.controller.do_play("trimmed")
 
-        if input[3] != None:
-            self.controller.do_rename(f"trimmed.wav {input[3]}.wav")
-        else:
-            os.remove(path.Path("trimmed.wav").resolve())
+        self.play_save_temp_audio("trimmed", trimmed_sound, input[3])
        
