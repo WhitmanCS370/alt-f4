@@ -190,7 +190,8 @@ class main(cmd.Cmd):
     def do_find_length(self, args):
         """Finds the length of a sound in seconds. Helper function to trim_sound.
         Implementation handled in EffectManager.
-        usage: find_length <file_name>"""
+        usage: find_length <file_name>
+        """
         if(self.validate("find_length", args)):
             self.files.find_length(args)
         else:
