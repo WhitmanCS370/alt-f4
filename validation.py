@@ -7,6 +7,9 @@ import os
 validPlayFlags = ["-multi", "-delay", "-mute", "-seq", "-rand"]
 validRemoveFolderFlags = ["-empty", "-nonempty"]
 
+
+### Helper functions
+
 def _arg_splitter(args):
     """Split arguments.
     Helper function.
@@ -59,12 +62,12 @@ def is_valid_out(arg):
         if is_valid_path(f"{outName}.wav"):
             print("Error: Cannot save a file when a file with the same name exists. \n")
             return False
-        if not valid_new_sound(arg):
+        if not is_valid_new_sound(arg):
             print("Error: Path to out file not recognized. \n")
             return False
     return True
 
-def directory_validator(arg):
+def is_valid_directory(arg):
     """Find if a directory/folder exists.
     Helper function.
     Returns true if the argument is a directory, false if it isn't.
@@ -74,7 +77,7 @@ def directory_validator(arg):
         return False
     return True
 
-def flag_check(arg, validFlags):
+def is_valid_flag(arg, validFlags):
     """Check play command tags are valid.
     Submethod of validate_play and validate_remove_folder to compare inputted 
     tags to tags we accept.
@@ -85,7 +88,7 @@ def flag_check(arg, validFlags):
             return True
     return False
 
-def valid_new_sound(arg):
+def is_valid_new_sound(arg):
     """Check that the path to a non-existant audio file is valid.
     Helper function.
     When making a new sound, part of the path is the folder in which the sound is to
@@ -96,7 +99,11 @@ def valid_new_sound(arg):
     outPath = arg.split("=")[-1]
     argSplit = outPath.rsplit("/", 1)[-2]
     print(f"precursor: {argSplit}")
-    return directory_validator(argSplit)
+    return is_valid_directory(argSplit)
+
+
+
+### Function validation.
 
 def validate_play(args = None):
     """Validate the play command.
@@ -110,14 +117,14 @@ def validate_play(args = None):
         return False
     for item in input:
         if "-" in item:
-            if not flag_check(item, validPlayFlags):
+            if not is_valid_flag(item, validPlayFlags):
                 print(f"Error: invalid flag '{item}' used.\n")
                 return False
         else:
-            if directory_validator(item) and not has_audio_files(item):
+            if is_valid_directory(item) and not has_audio_files(item):
                 print(f"Error: folder '{item}' doesn't contain any audio files. \n")
                 return False
-            if not is_valid_path(f"{item}.wav") and not directory_validator(item):
+            if not is_valid_path(f"{item}.wav") and not is_valid_directory(item):
                 print(f"Error: audio file '{item}' cannot be found.\n")
                 return False
     return True
@@ -148,7 +155,7 @@ def validate_list_sounds(args):
     """
     input = _arg_splitter(args)
     if len(input) == 1:
-        if directory_validator(input[0]):
+        if is_valid_directory(input[0]):
             return True
         print(f"Error: '{input[0]}' not recognized as a valid directory.\n")
     return False
@@ -162,10 +169,10 @@ def validate_add_sound(args):
     """
     input = _arg_splitter(args)
     if len(input) == 2:
-        if not directory_validator(input[0]):
+        if not is_valid_directory(input[0]):
             print(f"Error: '{input[0]}' not recognized as a valid directory.\n")
             return False
-        if not is_valid_path(input[1]) or directory_validator(input[1]):
+        if not is_valid_path(input[1]) or is_valid_directory(input[1]):
             print(f"Error: Source file '{input[1]}' not recognized.\n")
             return False
         if os.path.exists(os.path.join(input[0], os.path.basename(input[1]))):
@@ -180,6 +187,8 @@ def validate_remove_sound(args):
     exists.
     """
     input = _arg_splitter(args)
+    if not args:
+        return False
     if len(input) == 1:
         if not is_valid_path(input[0]):
             print(f"Error: Cannot recognize '{input[0]}', the sound file to remove.\n")
@@ -215,7 +224,7 @@ def validate_new_folder(args):
     """
     input = _arg_splitter(args)
     if len(input) == 1:
-        if directory_validator(input[0]):
+        if is_valid_directory(input[0]):
             print(f"Error: Folder '{input[0]}' already exists. \n")
             return False
         return True
@@ -234,25 +243,25 @@ def validate_remove_folder(args):
     
     # if there's one input, it must be an empty folder.
     if len(input) == 1:
-        if not directory_validator(input[0]):
+        if not is_valid_directory(input[0]):
             print(f"Error: Folder '{input[0]}' doesn't exist. \n")
             return False
         elif len(os.listdir(input[0])) > 0:
-            print(f"{input[0]} isn't empty. Type 'remove_folder -nonempty {input[0]}' to remove.")
+            print(f"Error: {input[0]} isn't empty. Type 'remove_folder -nonempty {input[0]}' to remove.")
             return False
         return True
 
     # if there's two input, the first must be a flag and the second must be a folder.
     # if the '-empty' flag is used, then the folder to remove must be empty.
     elif len(input) == 2:
-        if ("-" in input[0]) and not flag_check(input[0], validRemoveFolderFlags):
+        if ("-" in input[0]) and not is_valid_flag(input[0], validRemoveFolderFlags):
             print(f"Error: Invalid flag '{input[0]}' used.\n")
             return False
-        elif not directory_validator(input[1]):
+        elif not is_valid_directory(input[1]):
             print(f"Error: Folder '{input[1]}' doesn't exist. \n")
             return False
         elif input[0] == "-empty" and (len(os.listdir(input[1])) > 0):
-            print(f"{input[1]} isn't empty. Type 'remove_folder -nonempty {input[1]}' to remove.")
+            print(f"Error: {input[1]} isn't empty. Type 'remove_folder -nonempty {input[1]}' to remove.")
             return False
         return True
     print("Error: Too many arguments passed. \n")
@@ -260,28 +269,43 @@ def validate_remove_folder(args):
 
 def validate_list_folders(args):
     """Validate the list_folders command.
-    Checks that no arguments are passed.
+    Checks that no arguments are passed, or that the only argument is a 
+    valid directory.
 
     possible extension: only let user see folders that contain .wav files
     """
     input = _arg_splitter(args)
     if not args:
         return True
-    
-    if len(input) > 2:
-        print("Error: list_folders takes a maximum of 1 argument. \n")
-        return False
-    if len(input) == 1 and directory_validator(input[0]):
+
+    if len(input) == 1 and is_valid_directory(input[0]):
         return True
+    print("Error: list_folders takes a maximum of 1 argument. \n")
     return False
 
 def validate_trim_sound(args):
     """Validate the trim_sound command.
+    Checks that the user inputted either 3 or 4 arguments. The audio file to trim
+    must be valid/exist. If the user includes an -out flag, then it must be valid. 
+    The start and end times cannot be negative, nor can the end time come before 
+    the start time.
     """
     input = _arg_splitter(args)
-    if len(input) > 4 or len(input) < 2:
-        print("Error: Incorrect number of arguments passed. \n")
+    if not args:
         return False
+    if len(input) < 3 or len(input) > 4:
+        print(f"Error: Incorrect number of arguments ({len(input)}) passed. \n")
+        return False
+    if not is_valid_path(f"{input[0]}.wav"):
+        print(f"Error: '{input[0]}' is not a valid audio file. \n")
+        return False
+    if len(input) == 4:
+        if "-" in input[3]:
+            if not is_valid_out(input[3]):
+                return False
+        else:
+            print(f"Error: unknown '{input[3]}' passed instead of an -out flag. \n")
+            return False
     for item in input:
         if isinstance(item, float) and float(item) < 0:
             print("Error: invalid start and/or end times. \n")
@@ -293,6 +317,9 @@ def validate_trim_sound(args):
 
 def validate_reverse(args):
     """Validates the reverse command.
+    Checks to see that the user passed the correct number of arguments 
+    (either 1 or 2). If there's an -out flag, it checks if it's properly 
+    formatted. It checks that the audio file to be reversed is valid.
     """
     input = _arg_splitter(args)
 
