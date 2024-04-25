@@ -71,7 +71,7 @@ class main(cmd.Cmd):
                     delay = delayCommand[1]
                 else:
                     flags.append(item.replace("-",""))
-            elif validation.path_validator(f"{item}.wav"):
+            elif validation.is_valid_path(f"{item}.wav"):
                 sounds.append(item)
             elif validation.directory_validator(item):
                 folder = item
@@ -192,7 +192,7 @@ class main(cmd.Cmd):
         Implementation handled in EffectManager.
         usage: find_length <file_name>"""
         if(self.validate("find_length", args)):
-            self.effects.find_length(args)
+            self.files.find_length(args)
         else:
             self.do_help("find_length")
         return

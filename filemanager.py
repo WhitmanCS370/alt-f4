@@ -1,6 +1,7 @@
 import os
 import pathlib as path
 import shutil
+from pydub import AudioSegment
 
 class FileManager():
 
@@ -86,3 +87,18 @@ class FileManager():
         elif "empty" in flags or (flags == []):
             os.rmdir(folder)
             print(f"{folder} removed.")
+
+    def parse_find_length(self, args):
+        """
+        """
+        input = args.split(" ")
+        sound = input[0]
+        return sound
+    
+    def find_length(self, args):
+        """Find the length of a sound file"""
+        input = self.parse_find_length(args)
+        sound = AudioSegment.from_wav(f"{input}.wav")
+        length = len(sound)
+        length_seconds = length / 1000
+        print(f"{length_seconds} seconds")
