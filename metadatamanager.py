@@ -31,20 +31,5 @@ class MetadataManager:
         ''')
         return self.cursor.fetchall()
 
-    def set(self, key, value):
-        self.cursor.execute('''
-            INSERT INTO metadata (key, value) VALUES (?, ?)
-        ''', (key, value))
-        self.conn.commit()
-
-    def get(self, key):
-        self.cursor.execute('''
-            SELECT value FROM metadata WHERE key = ?
-        ''', (key,))
-        row = self.cursor.fetchone()
-        if row is None:
-            return None
-        return row[0]
-
     def close(self):
         self.conn.close()
