@@ -3,6 +3,7 @@
 import os
 
 import tkinter as tk
+from tkinter import filedialog, simpledialog
 
 from playsound import AudioPlayer
 from filemanager import FileManager
@@ -44,13 +45,23 @@ class AudioArchiveApp(tk.Tk):
         quit_button.pack(pady=10)
 
     def play_sound(self):
-        pass
+        filename = filedialog.askopenfilename(title='Select a sound file', filetypes=[('WAV files', '*.wav')])
+        if filename:
+            self.player.play(filename)
 
     def add_sound(self):
-        pass
+        source = filedialog.askopenfilename(title='Select a sound file to add', filetypes=[('WAV files', '*.wav')])
+        if source:
+            folder = filedialog.askdirectory(title='Select target folder')
+            if folder:
+                self.files.add_sound(f"{folder} {source}")
 
     def rename_sound(self):
-        pass
+        original = filedialog.askopenfilename(title='Select a sound file to rename', filetypes=[('WAV files', '*.wav')])
+        if original:
+            new_name = simpledialog.askstring("Rename", "Enter the new name for the sound file:")
+            if new_name:
+                self.files.rename(f"{original} {new_name}")
 
     def merge_sounds(self):
         pass
