@@ -47,7 +47,10 @@ class AudioArchiveApp(tk.Tk):
     def play_sound(self):
         filename = filedialog.askopenfilename(title='Select a sound file', filetypes=[('WAV files', '*.wav')])
         if filename:
-            self.player.play(filename)
+            relative_path = os.path.relpath(filename, start=os.getcwd())
+            relative_path = relative_path.split('.')[0]
+            relative_path = [relative_path]
+            self.player.seq_play(relative_path)
 
     def add_sound(self):
         source = filedialog.askopenfilename(title='Select a sound file to add', filetypes=[('WAV files', '*.wav')])
