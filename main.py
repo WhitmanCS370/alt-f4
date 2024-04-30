@@ -1,9 +1,12 @@
 import cmd, os
 
 import validation
+from datetime import datetime
 from playsound import AudioPlayer
 from filemanager import FileManager
+from metadatamanager import MetadataManager
 from effectsmanager import EffectManager
+
 
 class main(cmd.Cmd):
 
@@ -26,6 +29,7 @@ class main(cmd.Cmd):
         self.prompt = "\ninput command: "
         self.player = AudioPlayer(self)
         self.files = FileManager(self)
+        self.metadata = MetadataManager("metadata.db")
         self.effects = EffectManager(self)
         # init sound editing file.
 
