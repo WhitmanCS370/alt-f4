@@ -3,6 +3,7 @@ import cmd
 from playsound import AudioPlayer
 import validation
 from filemanager import FileManager
+from metadatamanager import MetadataManager
 
 class main(cmd.Cmd):
 
@@ -19,6 +20,7 @@ class main(cmd.Cmd):
         self.prompt = "\ninput command: "
         self.player = AudioPlayer(self)
         self.files = FileManager(self)
+        self.metadata = MetadataManager("metadata.db")
         # init sound editing file.
 
     def validate(self, inputType, args):
