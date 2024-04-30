@@ -24,6 +24,14 @@ class AudioArchiveApp(tk.Tk):
         self.create_widgets()
 
     def create_widgets(self):
+        upper_frame = tk.Frame(self, bg="red")
+        edit_frame = tk.Frame(self, bg="blue")
+        lower_frame = tk.Frame(self, bg="green")
+
+        upper_frame.pack(side='top', anchor='n')
+        edit_frame.pack()
+        lower_frame.pack()
+
         # Buttons
         play_button = tk.Button(self, text='Play Sound', command=self.play_sound)
         play_button.pack(pady=10)
@@ -34,11 +42,20 @@ class AudioArchiveApp(tk.Tk):
         rename_button = tk.Button(self, text='Rename Sound', command=self.rename_sound)
         rename_button.pack(pady=10)
 
-        merge_button = tk.Button(self, text='Merge Sounds', command=self.merge_sounds)
-        merge_button.pack(pady=10)
-
         list_sounds_button = tk.Button(self, text='List Sounds', command=self.list_sounds)
         list_sounds_button.pack(pady=10)
+
+        edit_label = tk.Label(edit_frame, text="Edit Sounds")
+        trim_button = tk.Button(edit_frame, text="Trim Sound", command=self.trim_sound)
+        reverse_button = tk.Button(edit_frame, text="Reverse Sound", command=self.reverse_sound)
+        merge_button = tk.Button(edit_frame, text='Merge Sounds', command=self.merge_sounds)
+
+        edit_label.grid(row=0, column=1)
+        trim_button.grid(row=1, column=0)
+        reverse_button.grid(row=1, column=1)
+        merge_button.grid(row=1, column=2)
+
+
 
         # Quit button
         quit_button = tk.Button(self, text='Quit', command=self.quit)
@@ -67,6 +84,12 @@ class AudioArchiveApp(tk.Tk):
                 self.files.rename(f"{original} {new_name}")
 
     def merge_sounds(self):
+        pass
+
+    def trim_sound(self):
+        pass
+
+    def reverse_sound(self):
         pass
 
     def list_sounds(self):
