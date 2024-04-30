@@ -45,7 +45,7 @@ class FileManager():
         filename = sourcePath.parts[-1]
 
         """create a record of the sound in the database"""
-        self.metadata.add("key", filename , "source path", datetime.now(), "lorem ipsum descriptor", "jazz, ethereal, chill, lofi")
+        self.metadata.add("key", filename, self.find_length(sourcePath), datetime.now(), "lorem ipsum descriptor", "jazz, ethereal, chill, lofi")
         
 
     def remove_sound(self, args):
@@ -100,8 +100,10 @@ class FileManager():
         """Find the length of a sound file.
         Prints the number of seconds a sound plays for.
         """
-        input = args.split(" ")
-        sound = AudioSegment.from_wav(f"{input[0]}.wav")
+        input = str(args).split(" ")
+        sound = AudioSegment.from_wav(f"{input[0]}")
         length = len(sound)
         length_seconds = length / 1000
         print(f"{length_seconds} seconds")
+
+        return (f"{length_seconds} seconds")

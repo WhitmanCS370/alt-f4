@@ -10,7 +10,7 @@ class MetadataManager:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 key TEXT,
                 value TEXT,
-                length INTEGER,
+                length TEXT,
                 last_modified TEXT,
                 description TEXT,
                 tags TEXT
