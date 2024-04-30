@@ -1,6 +1,7 @@
 import cmd, os
 
 import validation
+from datetime import datetime
 from playsound import AudioPlayer
 from filemanager import FileManager
 from metadatamanager import MetadataManager
