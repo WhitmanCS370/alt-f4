@@ -57,14 +57,17 @@ class AudioArchiveApp(tk.Tk):
         if source:
             folder = filedialog.askdirectory(title='Select target folder')
             if folder:
-                self.files.add_sound(f"{folder} {source}")
+                relative_path = os.path.relpath(folder, start=os.getcwd())
+                self.files.add_sound(f"{relative_path} {source}")
 
     def rename_sound(self):
         original = filedialog.askopenfilename(title='Select a sound file to rename', filetypes=[('WAV files', '*.wav')])
         if original:
+            original_path = os.path.relpath(original, start=os.getcwd())
+            path_dir = os.path.dirname(original_path)
             new_name = simpledialog.askstring("Rename", "Enter the new name for the sound file:")
             if new_name:
-                self.files.rename(f"{original} {new_name}")
+                self.files.rename(f"{original_path} {os.path.join(path_dir,new_name)}")
 
     def merge_sounds(self):
         pass
