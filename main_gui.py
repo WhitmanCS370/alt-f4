@@ -72,8 +72,8 @@ class AudioArchiveApp(tk.Tk):
     def list_sounds(self):
         folder = filedialog.askdirectory(title='Select folder to list sounds from')
         if folder:
-            folder = os.path.basename(folder)
-            sounds = self.files.list_sounds(folder)
+            relative_path = os.path.relpath(folder, start=os.getcwd())
+            sounds = self.files.list_sounds(relative_path)
             if sounds:
                 messagebox.showinfo("Sounds in folder", '\n'.join(sounds))
             else:
