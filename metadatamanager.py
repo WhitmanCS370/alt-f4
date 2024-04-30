@@ -25,6 +25,12 @@ class MetadataManager:
         ''', (key, value, length, last_modified, description, tags))
         self.conn.commit()
 
+    def modify_description(self, name, description):
+        self.cursor.execute('''
+            UPDATE metadata SET description = ? WHERE value = ?
+        ''', (description, name))
+        self.conn.commit()
+
     def list(self):
         self.cursor.execute('''
             SELECT key, value FROM metadata

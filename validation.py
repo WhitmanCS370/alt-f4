@@ -1,5 +1,6 @@
 import pathlib as path
 import os
+import shlex
 # argument checking is done at lower level because returning false here sends control
 # back to the function that called it and will throw an error message that's more 
 # useful to the user.
@@ -352,4 +353,29 @@ def validate_find_length(args):
             return False
         return True
     print("Error: Too many arguments passed. \n")
+    return False
+
+def validate_modify_description(args):
+    """Validate the modify_description command.
+    Checks to see that the user passed two arguments. The first argument
+    must be a valid audio file and the second argument must be a string.
+    """
+    if not args:
+        return False
+
+    input = shlex.split(args)
+
+    print(len(input))
+
+    print(input[1])
+
+    if len(input) == 2:
+        if not is_valid_path(f"{input[0]}"):
+            print(f"Error: '{input[0]}' is not a valid audio file. \n")
+            return False
+        if not isinstance(input[1], str):
+            print(f"Error: '{input[1]}' is not a valid description. \n")
+            return False
+        return True
+    print("Error: Incorrect number of arguments passed. \n")
     return False

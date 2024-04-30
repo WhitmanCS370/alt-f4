@@ -21,7 +21,8 @@ class main(cmd.Cmd):
                    "list_folders":validation.validate_list_folders,
                    "trim_sound":validation.validate_trim_sound,
                    "reverse":validation.validate_reverse,
-                   "find_length":validation.validate_find_length}
+                   "find_length":validation.validate_find_length,
+                   "modify_description":validation.validate_modify_description,}
 
     def __init__(self):
         super().__init__()
@@ -200,6 +201,17 @@ class main(cmd.Cmd):
             self.files.find_length(args)
         else:
             self.do_help("find_length")
+        return
+
+    def do_modify_description(self, args):
+        """Modify the description of a sound. Will overwrite the previous description.
+        Implementation handled in MetadataManager.
+        usage: modify_description <file_name> <description>
+        """
+        if(self.validate("modify_description", args)):
+            self.metadata.modify_description(args)
+        else:
+            self.do_help("modify_description")
         return
 
     def do_exit(self, args):
