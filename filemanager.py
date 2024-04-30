@@ -45,7 +45,7 @@ class FileManager():
         filename = sourcePath.parts[-1]
 
         """create a record of the sound in the database"""
-        self.metadata.add("key", filename, self.find_length(sourcePath), datetime.now(), "lorem ipsum descriptor", "jazz, ethereal, chill, lofi")
+        self.metadata.add("key", filename, self.find_length(sourcePath), datetime.now(), "", "")
         
 
     def remove_sound(self, args):
