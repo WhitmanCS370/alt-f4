@@ -2,11 +2,14 @@ import os
 import pathlib as path
 import shutil
 from pydub import AudioSegment
+from datetime import datetime
+from metadatamanager import MetadataManager
 
 class FileManager():
 
     def __init__(self, controller):
         self.controller = controller
+        self.metadata = MetadataManager("metadata.db")
 
     def rename(self, args):
         """Rename a sound file.
@@ -38,6 +41,12 @@ class FileManager():
         targetDirectory = path.Path(os.getcwd()).as_posix()+"/"+input[0]
         sourcePath = path.Path(input[1]).resolve()
         shutil.copy(sourcePath, targetDirectory)
+
+        filename = sourcePath.parts[-1]
+
+        """create a record of the sound in the database"""
+        self.metadata.add("key", filename , "source path", datetime.now(), "lorem ipsum descriptor", "jazz, ethereal, chill, lofi")
+        
 
     def remove_sound(self, args):
         """Remove sound.
