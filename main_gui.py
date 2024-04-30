@@ -3,7 +3,7 @@
 import os
 
 import tkinter as tk
-from tkinter import filedialog, simpledialog
+from tkinter import filedialog, simpledialog, messagebox
 
 from playsound import AudioPlayer
 from filemanager import FileManager
@@ -67,10 +67,17 @@ class AudioArchiveApp(tk.Tk):
         pass
 
     def list_sounds(self):
-        pass
+        folder = filedialog.askdirectory(title='Select folder to list sounds from')
+        if folder:
+            folder = os.path.basename(folder)
+            sounds = self.files.list_sounds(folder)
+            if sounds:
+                messagebox.showinfo("Sounds in folder", '\n'.join(sounds))
+            else:
+                messagebox.showinfo("Sounds in folder", "No audio files found in the selected folder.")
 
     def quit(self):
-        pass
+        self.destroy()
 
 if __name__ == "__main__":
     app = AudioArchiveApp()

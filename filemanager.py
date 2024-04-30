@@ -25,9 +25,12 @@ class FileManager():
         input = args.split(" ")
         targetDirectory = path.Path(os.getcwd()).as_posix()+"/"+input[0]
 
+        sound_files = []
         for file in os.listdir(targetDirectory):
             if file.endswith(".wav"):      
+                sound_files.append(file)
                 print(file)  
+        return sound_files
 
     def add_sound(self, args):
         """Add sound to a folder.
