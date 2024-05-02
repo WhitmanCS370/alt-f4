@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import os
+
 import tkinter as tk
 from tkinter import filedialog, simpledialog, messagebox
 
@@ -63,19 +65,19 @@ class AudioArchiveApp(tk.Tk):
         quit_button.pack(pady=10)
 
     def play_sound(self):
-        filename = filedialog.askopenfilename(title='Select a sound file', filetypes=[('WAV files', '*.wav')])
+        filename = filedialog.askopenfilename(title='Select a sound file', initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
         if filename:
             self.cli.run('play', file_path=filename)
 
     def add_sound(self):
         source = filedialog.askopenfilename(title='Select a sound file to add', filetypes=[('WAV files', '*.wav')])
         if source:
-            destination = filedialog.askdirectory(title='Select target folder')
+            destination = filedialog.askdirectory(title='Select target folder', initialdir=os.getcwd())
             if destination:
                 self.cli.run('add_sound', destination_path=destination, src=source)
 
     def rename_sound(self):
-        original = filedialog.askopenfilename(title='Select a sound file to rename', filetypes=[('WAV files', '*.wav')])
+        original = filedialog.askopenfilename(title='Select a sound file to rename', initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
         if original:
             new_name = simpledialog.askstring("Rename", "Enter the new name for the sound file:")
             if new_name:
@@ -91,7 +93,7 @@ class AudioArchiveApp(tk.Tk):
         pass
 
     def list_sounds(self):
-        folder = filedialog.askdirectory(title='Select folder to list sounds from')
+        folder = filedialog.askdirectory(title='Select folder to list sounds from', initialdir=os.getcwd())
         if folder:
             sounds = self.cli.run('list', folder=folder)
             if sounds:
