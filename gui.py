@@ -9,6 +9,8 @@ from playsound import AudioPlayer
 from filemanager import FileManager
 from effectsmanager import EffectManager
 
+from cliadapter import CLIAdapter
+
 class AudioArchiveApp(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -22,6 +24,10 @@ class AudioArchiveApp(tk.Tk):
 
         # Setup GUI
         self.create_widgets()
+
+        # Initialize the cli adapter
+        self.cli = CLIAdapter()
+
 
     def create_widgets(self):
         upper_frame = tk.Frame(self, bg="red")
@@ -64,27 +70,21 @@ class AudioArchiveApp(tk.Tk):
     def play_sound(self):
         filename = filedialog.askopenfilename(title='Select a sound file', filetypes=[('WAV files', '*.wav')])
         if filename:
-            relative_path = os.path.relpath(filename, start=os.getcwd())
-            relative_path = relative_path.split('.')[0]
-            relative_path = [relative_path]
-            self.player.seq_play(relative_path)
+            self.cli.run('play', file_path=filename)
 
     def add_sound(self):
         source = filedialog.askopenfilename(title='Select a sound file to add', filetypes=[('WAV files', '*.wav')])
         if source:
-            folder = filedialog.askdirectory(title='Select target folder')
-            if folder:
-                relative_path = os.path.relpath(folder, start=os.getcwd())
-                self.files.add_sound(f"{relative_path} {source}")
+            destination = filedialog.askdirectory(title='Select target folder')
+            if destination:
+                self.cli.run('add_sound', destination_path=destination, src=source)
 
     def rename_sound(self):
         original = filedialog.askopenfilename(title='Select a sound file to rename', filetypes=[('WAV files', '*.wav')])
         if original:
-            original_path = os.path.relpath(original, start=os.getcwd())
-            path_dir = os.path.dirname(original_path)
             new_name = simpledialog.askstring("Rename", "Enter the new name for the sound file:")
             if new_name:
-                self.files.rename(f"{original_path} {os.path.join(path_dir,new_name)}")
+                self.cli.run('rename', original=original, new_name=new_name)
 
     def merge_sounds(self):
         pass
