@@ -6,6 +6,7 @@ def get_relative_path(path):
     return os.path.relpath(path, start=os.getcwd())
 
 def get_parent_path(path):
+    """ Returns the parent directory path """
     return os.path.dirname(path)
 
 class CLIAdapter(main):
@@ -16,7 +17,14 @@ class CLIAdapter(main):
         super().__init__()
 
     def run(self, action, **kwargs):
-        """ Construct and execute a command as CLI input based on action and parameters """
+        """ 
+        Construct and execute a command as CLI input based on action and parameters 
+        
+        WARNING: The methods inside of Cmd do not pass along data inside of the actions they dispatch.
+        Below is a list of actions that must reference private methods inside of main directly
+        Subject to change and a better solution later
+        - list sounds 
+        """
         if action == 'play':
             file_path = get_relative_path(kwargs.get('file_path'))
             file_path = file_path.split('.')[0] # refers to issue #52
@@ -33,7 +41,6 @@ class CLIAdapter(main):
             command = f"rename {src} {dest}"
 
         elif action == 'list':
-            # Uses the file manager because we need to fetch list_sounds return value, which is not provided through onecwd
             path = get_relative_path(kwargs.get('folder'))
             sounds = self.files.list_sounds(path)
             return sounds
