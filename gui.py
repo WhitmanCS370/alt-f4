@@ -61,9 +61,6 @@ class AudioArchiveApp(tk.Tk):
         reverse_button.grid(row=1, column=1)
         merge_button.grid(row=1, column=2)
 
-
-
-        # Quit button
         quit_button = tk.Button(self, text='Quit', command=self.quit)
         quit_button.pack(pady=10)
 
@@ -98,8 +95,7 @@ class AudioArchiveApp(tk.Tk):
     def list_sounds(self):
         folder = filedialog.askdirectory(title='Select folder to list sounds from')
         if folder:
-            relative_path = os.path.relpath(folder, start=os.getcwd())
-            sounds = self.files.list_sounds(relative_path)
+            sounds = self.cli.run('list', folder=folder)
             if sounds:
                 messagebox.showinfo("Sounds in folder", '\n'.join(sounds))
             else:
