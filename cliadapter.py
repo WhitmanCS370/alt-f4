@@ -23,11 +23,13 @@ class CLIAdapter(main):
         WARNING: The methods inside of Cmd do not pass along data inside of the actions they dispatch.
         Below is a list of actions that must reference private methods inside of main directly
         Subject to change and a better solution later
-        - list sounds 
+        - list sounds
+
+        file_path.split('.')[0] examples relate to issue #52
         """
         if action == 'play':
             file_path = get_relative_path(kwargs.get('file_path'))
-            file_path = file_path.split('.')[0] # refers to issue #52
+            file_path = file_path.split('.')[0]
             command = f"play {file_path}"
 
         elif action == 'add_sound':
@@ -44,6 +46,24 @@ class CLIAdapter(main):
             path = get_relative_path(kwargs.get('folder'))
             sounds = self.files.list_sounds(path)
             return sounds
+        
+        elif action == 'merge':
+            files = []
+            for file in kwargs.get('files'):
+                file = get_relative_path(file).split('.')[0]
+                files.append(file)
+            files = ' '.join(files)
+            command = f"merge {files}"
+
+        elif action == 'trim':
+            file_path = get_relative_path(kwargs.get('file_path')).split('.')[0]
+            start_time = kwargs.get('start_time')
+            end_time = kwargs.get('end_time')
+            command = f"trim_sound {file_path} {start_time} {end_time}"
+
+        elif action == 'reverse':
+            file_path = get_relative_path(kwargs.get('file_path')).split('.')[0]
+            command = f"reverse {file_path}"
 
         # Execute the constructed command
         self.onecmd(command)

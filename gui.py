@@ -84,13 +84,22 @@ class AudioArchiveApp(tk.Tk):
                 self.cli.run('rename', original=original, new_name=new_name)
 
     def merge_sounds(self):
-        pass
+        files = filedialog.askopenfilenames(title='Select sound files to merge', initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
+        if files:
+            self.cli.run('merge', files=files)
 
     def trim_sound(self):
-        pass
+        file_path = filedialog.askopenfilename(title='Select a sound file to trim',  initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
+        if file_path:
+            start_time = simpledialog.askstring("Trim Sound", "Enter start time (seconds):")
+            end_time = simpledialog.askstring("Trim Sound", "Enter end time (seconds):")
+            if start_time and end_time:
+                self.cli.run('trim', file_path=file_path, start_time=start_time, end_time=end_time)
 
     def reverse_sound(self):
-        pass
+        file_path = filedialog.askopenfilename(title='Select a sound file to reverse',  initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
+        if file_path:
+            self.cli.run('reverse', file_path=file_path)
 
     def list_sounds(self):
         folder = filedialog.askdirectory(title='Select folder to list sounds from', initialdir=os.getcwd())
