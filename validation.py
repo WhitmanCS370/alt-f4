@@ -353,3 +353,30 @@ def validate_find_length(args):
         return True
     print("Error: Too many arguments passed. \n")
     return False
+
+def validate_filter(args):
+    """Validate the filter command. 
+    Checks to see that the user passed the correct number of arguments 
+    (either 2 or 3) and that the second argument is either 'high' or 'low'. 
+    If there's an -out flag, it checks if it's properly formatted. It checks 
+    that the audio file to be filtered is valid.
+    """
+    input = _arg_splitter(args)
+    if not args or len(input)< 2 or len(input) > 3:
+        print("Error: Incorrect number of arguments. \n")
+        return False
+    
+    if not is_valid_path(f"{input[0]}.wav"):
+        print(f"Error: '{input[0]}' is not a valid audio file. \n")
+        return False
+    
+    if input[1] not in ["high", "low"]:
+        print("Error: Please indicate a high or low filter using 'high' or 'low'. \n")
+        return False
+    
+    if len(input) == 3 and "-" in input[2]:
+        if not is_valid_out(input[2]):
+            return False
+    
+    return True
+    

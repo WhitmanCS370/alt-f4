@@ -21,7 +21,8 @@ class main(cmd.Cmd):
                    "list_folders":validation.validate_list_folders,
                    "trim_sound":validation.validate_trim_sound,
                    "reverse":validation.validate_reverse,
-                   "find_length":validation.validate_find_length}
+                   "find_length":validation.validate_find_length,
+                   "filter":validation.validate_filter}
 
     def __init__(self):
         super().__init__()
@@ -202,12 +203,22 @@ class main(cmd.Cmd):
             self.do_help("find_length")
         return
 
+    def do_filter(self, args):
+        """Puts a high or low filter on a sound.
+        Implementation handled in EffectManager.
+        usage: filter <file_name> <high or low> [-out=<path_to_new_file>]
+        """
+        if(self.validate("filter", args)):
+            self.effects.filter(args)
+        else:
+            self.do_help("filter")
+
     def do_exit(self, args):
         """ End the command line interface loop/program.
         usage) exit
         """
         return True
-
+#filter zelda/Voices/OOT_Cow high -out=zelda/Voices/Cow_high
 if __name__ == "__main__":
     CLI_interface = main()
     CLI_interface.cmdloop()
