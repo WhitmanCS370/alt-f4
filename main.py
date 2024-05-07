@@ -218,7 +218,7 @@ class main(cmd.Cmd):
         usage) exit
         """
         return True
-#filter zelda/Voices/OOT_Cow high -out=zelda/Voices/Cow_high
+    
 if __name__ == "__main__":
     CLI_interface = main()
     CLI_interface.cmdloop()
