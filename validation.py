@@ -27,6 +27,9 @@ def is_valid_path(arg):
     Helper function.
     Returns true if the argument is a file, false if it isn't.
     """
+    if ".wav.wav" in arg:
+        print("When accessing sounds do not append .wav.")
+        return False
     testPath = path.Path(arg).resolve()
     if not os.path.exists(testPath):
         return False
