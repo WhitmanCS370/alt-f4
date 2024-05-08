@@ -46,7 +46,7 @@ class FileManager():
 
         """create a record of the sound in the database"""
         """metadata fields will be blank by default until the user sets them"""
-        self.metadata.add("key", filename , "source path", datetime.now(), "", "")
+        self.metadata.add("key", filename , self.find_length(filename), datetime.now(), "", "")
     
     def add_sounds(self, args):
         """Add sounds to a folder.
@@ -146,7 +146,7 @@ class FileManager():
         Prints the number of seconds a sound plays for.
         """
         input = args.split(" ")
-        sound = AudioSegment.from_wav(f"{input[0]}")
+        sound = AudioSegment.from_wav(f"{input[0]}.wav")
         length = len(sound)
         length_seconds = length / 1000
         print(f"{length_seconds} seconds")
