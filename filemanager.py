@@ -45,7 +45,8 @@ class FileManager():
         filename = sourcePath.parts[-1]
 
         """create a record of the sound in the database"""
-        self.metadata.add("key", filename , "source path", datetime.now(), "lorem ipsum descriptor", "")
+        """metadata fields will be blank by default until the user sets them"""
+        self.metadata.add("key", filename , "source path", datetime.now(), "", "")
     
     def add_sounds(self, args):
         """Add sounds to a folder.
