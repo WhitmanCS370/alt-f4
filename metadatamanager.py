@@ -37,6 +37,12 @@ class MetadataManager:
         ''', (tags, filename))
         self.conn.commit()
 
+    def add_description(self, filename, description):
+        self.cursor.execute('''
+            UPDATE metadata SET description = ? WHERE key = ?
+        ''', (description, filename))
+        self.conn.commit()
+
     def set(self, key, value):
         self.cursor.execute('''
             INSERT INTO metadata (key, value) VALUES (?, ?)
