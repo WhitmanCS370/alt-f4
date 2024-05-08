@@ -46,6 +46,23 @@ class FileManager():
 
         """create a record of the sound in the database"""
         self.metadata.add("key", filename , "source path", datetime.now(), "lorem ipsum descriptor", "jazz, ethereal, chill, lofi")
+    
+    def add_sounds(self, args):
+        """Add sounds to a folder.
+        Copies sound files from a specified source path (can be internal or
+        external of the working directory) to a folder.
+        """
+        input = args.split(" ")
+        targetDirectory = path.Path(os.getcwd()).as_posix()+"/"+input[0]
+        sourcePath = path.Path(input[1]).resolve()
+        for file in os.listdir(sourcePath):
+            if file.endswith(".wav"):
+                shutil.copy(sourcePath.joinpath(file), targetDirectory)
+
+                filename = sourcePath.joinpath(file).parts[-1]
+
+                """create a record of the sound in the database"""
+                self.metadata.add("key", filename , "source path", datetime.now(), "lorem ipsum descriptor", "jazz, ethereal, chill, lofi")
         
 
     def remove_sound(self, args):
