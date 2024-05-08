@@ -63,7 +63,7 @@ class FileManager():
                 filename = sourcePath.joinpath(file).parts[-1]
 
                 """create a record of the sound in the database"""
-                self.metadata.add("key", filename , "length", "", "lorem ipsum descriptor", "")
+                self.metadata.add("key", filename , self.find_length(filename), "", "lorem ipsum descriptor", "")
 
     def add_tags(self, args):
         """Add tags to a sound file.
