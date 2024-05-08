@@ -77,6 +77,19 @@ class FileManager():
 
         # call metadata manager to add tags. parse every tag after the first argument (filename)
         self.metadata.add_tags(filename, tags)
+    
+    def add_description(self, args):
+        """Add a description to a sound file.
+        Adds a description to a sound file in the database.
+        """
+        input = args.split(" ")
+        sourcePath = path.Path(input[1]).resolve()
+        filename = sourcePath.joinpath(file).parts[-1]
+
+        description = input[2]
+
+        # call metadata manager to add description
+        self.metadata.add_description(filename, description)
         
 
     def remove_sound(self, args):
