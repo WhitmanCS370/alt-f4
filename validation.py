@@ -382,4 +382,18 @@ def validate_filter(args):
             return False
     
     return True
-    
+
+def validate_add_tags(args):
+    """Validate the add_tags command.
+    Checks to see that the user passed the correct number of arguments 
+    (at least 2). The first argument must be a valid audio file. The rest 
+    of the arguments can be anything.
+    """
+    input = _arg_splitter(args)
+    if not args or len(input) < 2:
+        print("Error: Not enough arguments passed. \n")
+        return False
+    if not is_valid_path(f"{input[0]}.wav"):
+        print(f"Error: '{input[0]}' is not a valid audio file. \n")
+        return False
+    return True

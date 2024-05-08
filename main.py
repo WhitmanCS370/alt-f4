@@ -22,7 +22,8 @@ class main(cmd.Cmd):
                    "trim_sound":validation.validate_trim_sound,
                    "reverse":validation.validate_reverse,
                    "find_length":validation.validate_find_length,
-                   "filter":validation.validate_filter}
+                   "filter":validation.validate_filter,
+                   "add_tags":validation.validate_add_tags,}
 
     def __init__(self):
         super().__init__()
