@@ -423,4 +423,15 @@ def validate_search_tag(args):
         print("Error: Not enough arguments passed. \n")
         return False
     return True
+
+def validate_search_description(args):
+    """Validate the search_description command.
+    Checks to see that the user passed the correct number of arguments 
+    (exactly 2). 
+    """
+    input = _arg_splitter(args)
+    if not args or len(input) < 2:
+        print("Error: Not enough arguments passed. \n")
+        return False
+    return True
     
