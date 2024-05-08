@@ -22,7 +22,8 @@ class main(cmd.Cmd):
                    "trim_sound":validation.validate_trim_sound,
                    "reverse":validation.validate_reverse,
                    "find_length":validation.validate_find_length,
-                   "filter":validation.validate_filter}
+                   "filter":validation.validate_filter,
+                   "add_tags":validation.validate_add_tags,}
 
     def __init__(self):
         super().__init__()
@@ -212,6 +213,16 @@ class main(cmd.Cmd):
             self.effects.filter(args)
         else:
             self.do_help("filter")
+    
+    def do_add_tags(self, args):
+        """Add tags to a sound file.
+        Implementation handled in MetadataManager.
+        usage: add_tags <file_name> <tag1> <tag2> ... <tagN>
+        """
+        if(self.validate("add_tags", args)):
+            self.metadata.add_tags(args)
+        else:
+            self.do_help("add_tags")
 
     def do_exit(self, args):
         """ End the command line interface loop/program.

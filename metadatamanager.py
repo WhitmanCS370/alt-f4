@@ -31,6 +31,12 @@ class MetadataManager:
         ''')
         return self.cursor.fetchall()
 
+    def add_tags(self, filename, tags):
+        self.cursor.execute('''
+            UPDATE metadata SET tags = ? WHERE key = ?
+        ''', (tags, filename))
+        self.conn.commit()
+
     def set(self, key, value):
         self.cursor.execute('''
             INSERT INTO metadata (key, value) VALUES (?, ?)
