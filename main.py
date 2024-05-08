@@ -82,7 +82,7 @@ class main(cmd.Cmd):
                     flags.append(item.replace("-",""))
             elif validation.is_valid_path(f"{item}.wav"):
                 sounds.append(item)
-            elif validation.directory_validator(item):
+            elif validation.is_valid_directory(item):
                 folder = item
 
         return flags, sounds, delay, folder
