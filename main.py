@@ -236,6 +236,17 @@ class main(cmd.Cmd):
         else:
             self.do_help("add_description")
 
+    
+    def do_search_tag(self, args):
+        """Search for a sound by tag.
+        Implementation handled in MetadataManager.
+        usage: search_tag <tag>
+        """
+        if(self.validate("search_tag", args)):
+            self.metadata.search_by_tag(args)
+        else:
+            self.do_help("search_tag")
+
     def do_exit(self, args):
         """ End the command line interface loop/program.
         usage) exit
