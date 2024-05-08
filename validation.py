@@ -397,3 +397,19 @@ def validate_add_tags(args):
         print(f"Error: '{input[0]}' is not a valid audio file. \n")
         return False
     return True
+
+def validate_add_description(args):
+    """Validate the add_description command.
+    Checks to see that the user passed the correct number of arguments 
+    (exactly 2). The first argument must be a valid audio file.
+    The second argument must be a description string.
+    """
+    input = _arg_splitter(args)
+    if not args or len(input) < 2:
+        print("Error: Not enough arguments passed. \n")
+        return False
+    if not is_valid_path(f"{input[0]}.wav"):
+        print(f"Error: '{input[0]}' is not a valid audio file. \n")
+        return False
+    return True
+    
