@@ -31,7 +31,7 @@ class AudioArchiveApp(tk.Tk):
 
     def create_widgets(self):
         upper_frame = tk.Frame(self, bg="red")
-        edit_frame = tk.Frame(self, bg="blue")
+        edit_frame = tk.Frame(self)
         lower_frame = tk.Frame(self, bg="green")
 
         upper_frame.pack(side='top', anchor='n')

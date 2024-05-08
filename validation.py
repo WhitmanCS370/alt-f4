@@ -45,10 +45,11 @@ def has_audio_files(arg):
 
     if len(os.listdir(directory)) == 0:
         return False
-    for file in directory:
+    for file in os.listdir(directory):
         if file.endswith(".wav"):      
             return True  
-    return False
+        print(file)
+    #return False
 
 def is_valid_out(arg):
     """Validate -out flags.
