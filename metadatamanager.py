@@ -51,6 +51,13 @@ class MetadataManager:
         ''', (search_pattern,))
         return self.cursor.fetchall()
 
+    def search_by_description(self, tag):
+        search_pattern = f'%{tag}%'  # This creates a pattern to match the tag anywhere in the string
+        self.cursor.execute('''
+        SELECT key, value FROM metadata WHERE description LIKE ?
+        ''', (search_pattern,))
+        return self.cursor.fetchall()
+
     def set(self, key, value):
         self.cursor.execute('''
             INSERT INTO metadata (key, value) VALUES (?, ?)
