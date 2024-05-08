@@ -139,9 +139,11 @@ class EffectManager():
         to a set new file name or automatically deleted.
         """
         input = self.parse_trim_sound(args)
-        sound_mp3 = AudioSegment.from_wav(f"{input[0]}.wav")
-        length = len(sound_mp3)
-        trimmed_sound = sound_mp3[float(input[1])*1000:float(input[2])*1000]
+        sound = AudioSegment.from_wav(f"{input[0]}.wav")
+        if float(input[1])*1000 > len(sound):
+            trimmed_sound = sound[float(len(sound))-1:float(input[2])*1000]
+        else:
+            trimmed_sound = sound[float(input[1])*1000:float(input[2])*1000]
 
         self.play_save_temp_audio("trimmed", trimmed_sound, input[3])
 
