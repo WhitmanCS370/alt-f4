@@ -23,7 +23,8 @@ class main(cmd.Cmd):
                    "reverse":validation.validate_reverse,
                    "find_length":validation.validate_find_length,
                    "filter":validation.validate_filter,
-                   "add_tags":validation.validate_add_tags,}
+                   "add_tags":validation.validate_add_tags,
+                   "add_description":validation.validate_add_description,}
 
     def __init__(self):
         super().__init__()
@@ -223,6 +224,16 @@ class main(cmd.Cmd):
             self.metadata.add_tags(args)
         else:
             self.do_help("add_tags")
+
+    def do_add_description(self, args):
+        """Add a description to a sound file.
+        Implementation handled in MetadataManager.
+        usage: add_description <file_name> <description>
+        """
+        if(self.validate("add_description", args)):
+            self.metadata.add_description(args)
+        else:
+            self.do_help("add_description")
 
     def do_exit(self, args):
         """ End the command line interface loop/program.
