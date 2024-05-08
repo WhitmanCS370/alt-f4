@@ -63,6 +63,17 @@ class FileManager():
 
                 """create a record of the sound in the database"""
                 self.metadata.add("key", filename , "source path", datetime.now(), "lorem ipsum descriptor", "")
+
+    def add_tags(self, args):
+        """Add tags to a sound file.
+        Adds tags to a sound file in the database.
+        """
+        input = args.split(" ")
+        sourcePath = path.Path(input[1]).resolve()
+        filename = sourcePath.joinpath(file).parts[-1]
+
+        # call metadata manager to add tags. parse every tag after the first argument (filename)
+        self.metadata.add_tags("key", filename, "sourcepath", datetime.now(), "lorem ipsum descriptor", input[2:])
         
 
     def remove_sound(self, args):
