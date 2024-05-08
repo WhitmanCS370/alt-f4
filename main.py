@@ -24,7 +24,8 @@ class main(cmd.Cmd):
                    "find_length":validation.validate_find_length,
                    "filter":validation.validate_filter,
                    "add_tags":validation.validate_add_tags,
-                   "add_description":validation.validate_add_description,}
+                   "add_description":validation.validate_add_description,
+                   "search_tag":validation.validate_search_tag,}
 
     def __init__(self):
         super().__init__()
