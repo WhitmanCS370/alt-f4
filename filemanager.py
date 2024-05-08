@@ -45,7 +45,7 @@ class FileManager():
         filename = sourcePath.parts[-1]
 
         """create a record of the sound in the database"""
-        self.metadata.add("key", filename , "source path", datetime.now(), "lorem ipsum descriptor", "jazz, ethereal, chill, lofi")
+        self.metadata.add("key", filename , "source path", datetime.now(), "lorem ipsum descriptor", "")
     
     def add_sounds(self, args):
         """Add sounds to a folder.
@@ -62,7 +62,7 @@ class FileManager():
                 filename = sourcePath.joinpath(file).parts[-1]
 
                 """create a record of the sound in the database"""
-                self.metadata.add("key", filename , "source path", datetime.now(), "lorem ipsum descriptor", "jazz, ethereal, chill, lofi")
+                self.metadata.add("key", filename , "source path", datetime.now(), "lorem ipsum descriptor", "")
         
 
     def remove_sound(self, args):
