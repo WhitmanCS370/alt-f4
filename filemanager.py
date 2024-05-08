@@ -48,7 +48,52 @@ class FileManager():
         filename = sourcePath.parts[-1]
 
         """create a record of the sound in the database"""
-        self.metadata.add("key", filename , "source path", datetime.now(), "lorem ipsum descriptor", "jazz, ethereal, chill, lofi")
+        """metadata fields will be blank by default until the user sets them"""
+        self.metadata.add("key", filename , self.find_length(filename), datetime.now(), "", "")
+    
+    def add_sounds(self, args):
+        """Add sounds to a folder.
+        Copies sound files from a specified source path (can be internal or
+        external of the working directory) to a folder.
+        """
+        input = args.split(" ")
+        targetDirectory = path.Path(os.getcwd()).as_posix()+"/"+input[0]
+        sourcePath = path.Path(input[1]).resolve()
+        for file in os.listdir(sourcePath):
+            if file.endswith(".wav"):
+                shutil.copy(sourcePath.joinpath(file), targetDirectory)
+
+                filename = sourcePath.joinpath(file).parts[-1]
+
+                """create a record of the sound in the database"""
+                self.metadata.add("key", filename , self.find_length(filename), "", "lorem ipsum descriptor", "")
+
+    def add_tags(self, args):
+        """Add tags to a sound file.
+        Adds tags to a sound file in the database. 
+        """
+        input = args.split(" ")
+        sourcePath = path.Path(input[1]).resolve()
+        filename = sourcePath.joinpath(file).parts[-1]
+
+        # separate the tags by commas. from input[2:] to the end of the list
+        tags = ', '.join(input[2:])
+
+        # call metadata manager to add tags. parse every tag after the first argument (filename)
+        self.metadata.add_tags(filename, tags)
+    
+    def add_description(self, args):
+        """Add a description to a sound file.
+        Adds a description to a sound file in the database.
+        """
+        input = args.split(" ")
+        sourcePath = path.Path(input[1]).resolve()
+        filename = sourcePath.joinpath(file).parts[-1]
+
+        description = input[2]
+
+        # call metadata manager to add description
+        self.metadata.add_description(filename, description)
         
 
     def remove_sound(self, args):

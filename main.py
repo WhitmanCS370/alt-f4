@@ -21,7 +21,12 @@ class main(cmd.Cmd):
                    "list_folders":validation.validate_list_folders,
                    "trim_sound":validation.validate_trim_sound,
                    "reverse":validation.validate_reverse,
-                   "find_length":validation.validate_find_length}
+                   "find_length":validation.validate_find_length,
+                   "filter":validation.validate_filter,
+                   "add_tags":validation.validate_add_tags,
+                   "add_description":validation.validate_add_description,
+                   "search_tag":validation.validate_search_tag,
+                   "search_description":validation.validate_search_description,}
 
     def __init__(self):
         super().__init__()
@@ -202,12 +207,62 @@ class main(cmd.Cmd):
             self.do_help("find_length")
         return
 
+    def do_filter(self, args):
+        """Puts a high or low filter on a sound.
+        Implementation handled in EffectManager.
+        usage: filter <file_name> <high or low> [-out=<path_to_new_file>]
+        """
+        if(self.validate("filter", args)):
+            self.effects.filter(args)
+        else:
+            self.do_help("filter")
+    
+    def do_add_tags(self, args):
+        """Add tags to a sound file.
+        Implementation handled in MetadataManager.
+        usage: add_tags <file_name> <tag1> <tag2> ... <tagN>
+        """
+        if(self.validate("add_tags", args)):
+            self.metadata.add_tags(args)
+        else:
+            self.do_help("add_tags")
+
+    def do_add_description(self, args):
+        """Add a description to a sound file.
+        Implementation handled in MetadataManager.
+        usage: add_description <file_name> <description>
+        """
+        if(self.validate("add_description", args)):
+            self.metadata.add_description(args)
+        else:
+            self.do_help("add_description")
+
+    def do_search_tag(self, args):
+        """Search for a sound by tag.
+        Implementation handled in MetadataManager.
+        usage: search_tag <tag>
+        """
+        if(self.validate("search_tag", args)):
+            self.metadata.search_by_tag(args)
+        else:
+            self.do_help("search_tag")
+    
+    def do_search_description(self, args):
+        """Search for a sound by description.
+        Implementation handled in MetadataManager.
+        usage: search_description <description>
+        """
+        if(self.validate("search_description", args)):
+            self.metadata.search_by_description(args)
+        else:
+            self.do_help("search_description")
+
     def do_exit(self, args):
         """ End the command line interface loop/program.
         usage) exit
         """
         return True
-
+    
 if __name__ == "__main__":
     CLI_interface = main()
     CLI_interface.cmdloop()

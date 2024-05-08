@@ -1,4 +1,5 @@
 import sqlite3
+import datetime
 
 class MetadataManager:
     def __init__(self, db_path):
@@ -22,13 +23,39 @@ class MetadataManager:
     def add(self, key, value, length, last_modified, description, tags):
         self.cursor.execute('''
             INSERT INTO metadata (key, value, length, last_modified, description, tags) VALUES (?, ?, ?, ?, ?, ?)
-        ''', (key, value, length, last_modified, description, tags))
+        ''', (key, value, length, self.getTimeStamp(), description, tags))
         self.conn.commit()
 
     def list(self):
         self.cursor.execute('''
             SELECT key, value FROM metadata
         ''')
+        return self.cursor.fetchall()
+
+    def add_tags(self, filename, tags):
+        self.cursor.execute('''
+            UPDATE metadata SET tags = ?, last_modified = ? WHERE key = ?
+        ''', (tags, self.getTimeStamp(), filename))
+        self.conn.commit()
+
+    def add_description(self, filename, description):
+        self.cursor.execute('''
+        UPDATE metadata SET description = ?, last_modified = ? WHERE key = ?
+        ''', (description, self.getTimeStamp(), filename))
+        self.conn.commit()
+
+    def search_by_tag(self, tag):
+        search_pattern = f'%{tag}%'  # This creates a pattern to match the tag anywhere in the string
+        self.cursor.execute('''
+        SELECT key, value FROM metadata WHERE tags LIKE ?
+        ''', (search_pattern,))
+        return self.cursor.fetchall()
+
+    def search_by_description(self, tag):
+        search_pattern = f'%{tag}%'  # This creates a pattern to match the tag anywhere in the string
+        self.cursor.execute('''
+        SELECT key, value FROM metadata WHERE description LIKE ?
+        ''', (search_pattern,))
         return self.cursor.fetchall()
 
     def set(self, key, value):
@@ -48,3 +75,6 @@ class MetadataManager:
 
     def close(self):
         self.conn.close()
+
+    def getTimeStamp():
+        return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")

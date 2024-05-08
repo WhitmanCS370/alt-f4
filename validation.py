@@ -27,6 +27,9 @@ def is_valid_path(arg):
     Helper function.
     Returns true if the argument is a file, false if it isn't.
     """
+    if ".wav.wav" in arg:
+        print("When accessing sounds do not append .wav.")
+        return False
     testPath = path.Path(arg).resolve()
     if not os.path.exists(testPath):
         return False
@@ -353,3 +356,82 @@ def validate_find_length(args):
         return True
     print("Error: Too many arguments passed. \n")
     return False
+
+def validate_filter(args):
+    """Validate the filter command. 
+    Checks to see that the user passed the correct number of arguments 
+    (either 2 or 3) and that the second argument is either 'high' or 'low'. 
+    If there's an -out flag, it checks if it's properly formatted. It checks 
+    that the audio file to be filtered is valid.
+    """
+    input = _arg_splitter(args)
+    if not args or len(input)< 2 or len(input) > 3:
+        print("Error: Incorrect number of arguments. \n")
+        return False
+    
+    if not is_valid_path(f"{input[0]}.wav"):
+        print(f"Error: '{input[0]}' is not a valid audio file. \n")
+        return False
+    
+    if input[1] not in ["high", "low"]:
+        print("Error: Please indicate a high or low filter using 'high' or 'low'. \n")
+        return False
+    
+    if len(input) == 3 and "-" in input[2]:
+        if not is_valid_out(input[2]):
+            return False
+    
+    return True
+
+def validate_add_tags(args):
+    """Validate the add_tags command.
+    Checks to see that the user passed the correct number of arguments 
+    (at least 2). The first argument must be a valid audio file. The rest 
+    of the arguments can be anything.
+    """
+    input = _arg_splitter(args)
+    if not args or len(input) < 2:
+        print("Error: Not enough arguments passed. \n")
+        return False
+    if not is_valid_path(f"{input[0]}.wav"):
+        print(f"Error: '{input[0]}' is not a valid audio file. \n")
+        return False
+    return True
+
+def validate_add_description(args):
+    """Validate the add_description command.
+    Checks to see that the user passed the correct number of arguments 
+    (exactly 2). The first argument must be a valid audio file.
+    The second argument must be a description string.
+    """
+    input = _arg_splitter(args)
+    if not args or len(input) < 2:
+        print("Error: Not enough arguments passed. \n")
+        return False
+    if not is_valid_path(f"{input[0]}.wav"):
+        print(f"Error: '{input[0]}' is not a valid audio file. \n")
+        return False
+    return True
+
+def validate_search_tag(args):
+    """Validate the search_tag command.
+    Checks to see that the user passed the correct number of arguments 
+    (exactly 2). 
+    """
+    input = _arg_splitter(args)
+    if not args or len(input) < 2:
+        print("Error: Not enough arguments passed. \n")
+        return False
+    return True
+
+def validate_search_description(args):
+    """Validate the search_description command.
+    Checks to see that the user passed the correct number of arguments 
+    (exactly 2). 
+    """
+    input = _arg_splitter(args)
+    if not args or len(input) < 2:
+        print("Error: Not enough arguments passed. \n")
+        return False
+    return True
+    

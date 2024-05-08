@@ -1,5 +1,6 @@
 from pydub import AudioSegment
 from pydub.playback import play
+from pydub.effects import low_pass_filter, high_pass_filter
 import os
 import pathlib as path
 
@@ -65,6 +66,25 @@ class EffectManager():
             out = outCommand[1]
 
         return sound, start_time, end_time, out
+    
+    def parse_filter(self, args):
+        """Parse through filter arguments.
+        Helper function called by filter.
+        Returns the sound to filter, a high or low flag, and the optional out that says where to save
+        the filtered sound to.
+        """
+        input = args.split(" ")
+        out = None
+        sound = input[0]
+        high_or_low_flag = True
+        if input[1] == 'low':
+            high_or_low_flag = False
+        if len(input) == 3:
+            outCommand = input[2].split("=")
+            out = outCommand[1]
+        print(out)
+        return sound, high_or_low_flag, out
+
         
     def play_save_temp_audio(self, func, audio, outFile):
         """ File management for edited sounds.
@@ -123,4 +143,19 @@ class EffectManager():
         trimmed_sound = sound_mp3[float(input[1])*1000:float(input[2])*1000]
 
         self.play_save_temp_audio("trimmed", trimmed_sound, input[3])
+
+    def filter(self, args):
+        """ Puts a filter that either raises or lowers the pitch of a sound
+        Uses a high or low flag specified by the user to determine whether 
+        to put a high or low filter on the sound. The new sound is played and
+        then either saved to a set new file name or automatically deleted.
+        """
+        input = self.parse_filter(args)
+        audio = AudioSegment.from_wav(f"{input[0]}.wav")
+        if input[1] == False:
+            filtered_low = low_pass_filter(audio, cutoff=1000)
+            self.play_save_temp_audio("filtered_low", filtered_low, input[2])
+        if input[1] == True:
+            filtered_high = high_pass_filter(audio, cutoff=10000)
+            self.play_save_temp_audio("filtered_high", filtered_high, input[2])
        
