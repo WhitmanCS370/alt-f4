@@ -8,6 +8,7 @@ from tkinter import filedialog, simpledialog, messagebox
 from playsound import AudioPlayer
 from filemanager import FileManager
 from effectsmanager import EffectManager
+from metadatamanager import MetadataManager
 
 from cliadapter import CLIAdapter
 
@@ -27,6 +28,7 @@ class AudioArchiveApp(tk.Tk):
 
         # Initialize the cli adapter
         self.cli = CLIAdapter()
+        self.metadata = MetadataManager("metadata.db")
 
 
     def create_widgets(self):
@@ -61,6 +63,9 @@ class AudioArchiveApp(tk.Tk):
         reverse_button.grid(row=1, column=1)
         merge_button.grid(row=1, column=2)
 
+        view_metadata_button = tk.Button(self, text='View Metadata', command=self.view_metadata)
+        view_metadata_button.pack(pady=10)
+
         quit_button = tk.Button(self, text='Quit', command=self.quit)
         quit_button.pack(pady=10)
 
@@ -68,6 +73,15 @@ class AudioArchiveApp(tk.Tk):
         filename = filedialog.askopenfilename(title='Select a sound file', initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
         if filename:
             self.cli.run('play', file_path=filename)
+
+    def view_metadata(self):
+        filename = filedialog.askopenfilename(title='Select a sound file', initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
+        if filename:
+            metadata = self.metadata.has_metadata(os.path.basename(filename))
+            if metadata:
+                messagebox.showinfo("Metadata", metadata)
+            else:
+                messagebox.showinfo("Metadata", "No metadata found for the selected sound file.")
 
     def add_sound(self):
         source = filedialog.askopenfilename(title='Select a sound file to add', filetypes=[('WAV files', '*.wav')])
