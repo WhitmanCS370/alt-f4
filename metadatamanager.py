@@ -89,14 +89,14 @@ class MetadataManager:
             return None
         return f'Filename: {row[2]}\nLength: {row[3]}\nLast Modified: {row[4]}\nDescription: {row[5]}\nTags: {row[6]}'
 
-    def get(self, key):
+    def get(self, filename):
         self.cursor.execute('''
-            SELECT value FROM metadata WHERE key = ?
-        ''', (key,))
+            SELECT * FROM metadata WHERE value = ?
+        ''', (filename,))
         row = self.cursor.fetchone()
         if row is None:
             return None
-        return row[0]
+        return row  # Convert the Row object to a dictionary
 
     def close(self):
         self.conn.close()

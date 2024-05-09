@@ -19,7 +19,7 @@ class MetadataViewer(tk.Toplevel):
         self.title('Metadata Viewer')
         self.geometry('400x300')
         self.filename = filename
-        self.metadata_manager = metadata_manager
+        self.metadata_manager = MetadataManager("metadata.db")
         
         self.create_widgets()
 
@@ -29,6 +29,9 @@ class MetadataViewer(tk.Toplevel):
 
         self.edit_button = tk.Button(self, text='Edit Metadata', command=self.edit_metadata)
         self.edit_button.pack(pady=10)
+
+        self.close_button = tk.Button(self, text='Close', command=self.destroy)
+        self.close_button.pack(pady=10)
 
         self.refresh_metadata()
 
@@ -41,11 +44,15 @@ class MetadataViewer(tk.Toplevel):
             self.metadata_label.config(text="No metadata available for this file.")
 
     def edit_metadata(self):
-        tags = simpledialog.askstring("Edit Tags", "Enter new tags separated by commas:", parent=self)
-        description = simpledialog.askstring("Edit Description", "Enter new description:", parent=self)
+        current_metadata = self.metadata_manager.get(self.filename)
+
+        current_tags = current_metadata[6]
+        current_description = current_metadata[5]
+
+        tags = simpledialog.askstring("Edit Tags", "Enter new tags separated by commas:", initialvalue=current_tags, parent=self)
+        description = simpledialog.askstring("Edit Description", "Enter new description:", initialvalue=current_description, parent=self)
         if tags is not None and description is not None:
             self.metadata_manager.update(self.filename, description, tags)
-            messagebox.showinfo("Success", "Metadata updated successfully!", parent=self)
             self.refresh_metadata()
 
 class AudioArchiveApp(tk.Tk):
