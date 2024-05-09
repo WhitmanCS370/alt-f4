@@ -77,7 +77,6 @@ class AudioArchiveApp(tk.Tk):
 
     def view_metadata(self):
         filename = filedialog.askopenfilename(title='Select a sound file', initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
-        print(f'filename is {filename}')
         if filename:
             metadata = self.metadata.has_metadata(os.path.basename(filename))
             if metadata:
@@ -89,7 +88,6 @@ class AudioArchiveApp(tk.Tk):
                     self.add_metadata(filename)
 
     def add_metadata(self, filename):
-        print(f'filename is {filename}')
         tags = simpledialog.askstring("Add Tags", "Enter tags separated by commas:")
         description = simpledialog.askstring("Add Description", "Enter a description:")
         self.metadata.add("", os.path.basename(filename), self.files.find_length(filename), description, tags)
