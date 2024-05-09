@@ -11,7 +11,7 @@ class MetadataManager:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 key TEXT,
                 value TEXT,
-                length INTEGER,
+                length TEXT,
                 last_modified TEXT,
                 description TEXT,
                 tags TEXT
@@ -20,10 +20,19 @@ class MetadataManager:
         self.conn.commit()
 
     # add a new metadata item for a sound
-    def add(self, key, value, length, last_modified, description, tags):
+    def add(self, key, value, length, description, tags):
         self.cursor.execute('''
             INSERT INTO metadata (key, value, length, last_modified, description, tags) VALUES (?, ?, ?, ?, ?, ?)
         ''', (key, value, length, self.getTimeStamp(), description, tags))
+        self.conn.commit()
+
+    # update an existing metadata item for a sound
+    def update(self, filename, description, tags):
+        self.cursor.execute('''
+            UPDATE metadata 
+            SET last_modified = ?, description = ?, tags = ? 
+            WHERE value = ?
+        ''', (self.getTimeStamp(), description, tags, filename))
         self.conn.commit()
 
     def list(self):
@@ -64,17 +73,33 @@ class MetadataManager:
         ''', (key, value))
         self.conn.commit()
 
-    def get(self, key):
+    def has_metadata(self, filename):
         self.cursor.execute('''
-            SELECT value FROM metadata WHERE key = ?
-        ''', (key,))
+            SELECT value FROM metadata WHERE value = ?
+        ''', (filename,))
+        row = self.cursor.fetchone()
+        return row is not None
+
+    def stringify_metadata(self, filename):
+        self.cursor.execute('''
+            SELECT * FROM metadata WHERE value = ?
+        ''', (filename,))
         row = self.cursor.fetchone()
         if row is None:
             return None
-        return row[0]
+        return f'Filename: {row[2]}\nLength: {row[3]}\nLast Modified: {row[4]}\nDescription: {row[5]}\nTags: {row[6]}'
+
+    def get(self, filename):
+        self.cursor.execute('''
+            SELECT * FROM metadata WHERE value = ?
+        ''', (filename,))
+        row = self.cursor.fetchone()
+        if row is None:
+            return None
+        return row  # Convert the Row object to a dictionary
 
     def close(self):
         self.conn.close()
 
-    def getTimeStamp():
+    def getTimeStamp(self):
         return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")

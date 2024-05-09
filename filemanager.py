@@ -149,7 +149,8 @@ class FileManager():
         Prints the number of seconds a sound plays for.
         """
         input = args.split(" ")
-        sound = AudioSegment.from_wav(f"{input[0]}.wav")
+        sound = AudioSegment.from_wav(f"{input[0]}")
         length = len(sound)
         length_seconds = length / 1000
-        print(f"{length_seconds} seconds")
+
+        return f"{length_seconds} seconds"
