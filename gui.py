@@ -64,7 +64,7 @@ class AudioArchiveApp(tk.Tk):
         reverse_button.grid(row=1, column=1)
         merge_button.grid(row=1, column=2)
 
-        view_metadata_button = tk.Button(self, text='View Metadata', command=self.view_metadata)
+        view_metadata_button = tk.Button(self, text='View/Edit Metadata', command=self.view_metadata)
         view_metadata_button.pack(pady=10)
 
         quit_button = tk.Button(self, text='Quit', command=self.quit)
