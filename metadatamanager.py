@@ -30,9 +30,9 @@ class MetadataManager:
     def update(self, filename, description, tags):
         self.cursor.execute('''
             UPDATE metadata 
-            SET description = ?, tags = ?
+            SET last_modified = ?, description = ?, tags = ? 
             WHERE value = ?
-        ''', (description, tags, filename))
+        ''', (self.getTimeStamp(), description, tags, filename))
         self.conn.commit()
 
     def list(self):
