@@ -64,6 +64,13 @@ class MetadataManager:
         ''', (key, value))
         self.conn.commit()
 
+    def has_metadata(self, filename):
+        self.cursor.execute('''
+            SELECT value FROM metadata WHERE value = ?
+        ''', (filename,))
+        row = self.cursor.fetchone()
+        return row is not None
+
     def get(self, key):
         self.cursor.execute('''
             SELECT value FROM metadata WHERE key = ?
