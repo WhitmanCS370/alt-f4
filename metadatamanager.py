@@ -26,6 +26,15 @@ class MetadataManager:
         ''', (key, value, length, self.getTimeStamp(), description, tags))
         self.conn.commit()
 
+    # update an existing metadata item for a sound
+    def update(self, filename, description, tags):
+        self.cursor.execute('''
+            UPDATE metadata 
+            SET description = ?, tags = ?
+            WHERE value = ?
+        ''', (description, tags, filename))
+        self.conn.commit()
+
     def list(self):
         self.cursor.execute('''
             SELECT key, value FROM metadata

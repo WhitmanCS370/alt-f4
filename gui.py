@@ -13,6 +13,41 @@ from metadatamanager import MetadataManager
 
 from cliadapter import CLIAdapter
 
+class MetadataViewer(tk.Toplevel):
+    def __init__(self, parent, filename, metadata_manager):
+        super().__init__(parent)
+        self.title('Metadata Viewer')
+        self.geometry('400x300')
+        self.filename = filename
+        self.metadata_manager = metadata_manager
+        
+        self.create_widgets()
+
+    def create_widgets(self):
+        self.metadata_label = tk.Label(self, text='', justify=tk.LEFT, font=("Arial", 14))
+        self.metadata_label.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+
+        self.edit_button = tk.Button(self, text='Edit Metadata', command=self.edit_metadata)
+        self.edit_button.pack(pady=10)
+
+        self.refresh_metadata()
+
+    def refresh_metadata(self):
+        metadata = self.metadata_manager.has_metadata(self.filename)
+        if metadata:
+            metadata_text = self.metadata_manager.stringify_metadata(self.filename)
+            self.metadata_label.config(text=metadata_text)
+        else:
+            self.metadata_label.config(text="No metadata available for this file.")
+
+    def edit_metadata(self):
+        tags = simpledialog.askstring("Edit Tags", "Enter new tags separated by commas:", parent=self)
+        description = simpledialog.askstring("Edit Description", "Enter new description:", parent=self)
+        if tags is not None and description is not None:
+            self.metadata_manager.update(self.filename, description, tags)
+            messagebox.showinfo("Success", "Metadata updated successfully!", parent=self)
+            self.refresh_metadata()
+
 class AudioArchiveApp(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -80,7 +115,7 @@ class AudioArchiveApp(tk.Tk):
         if filename:
             metadata = self.metadata.has_metadata(os.path.basename(filename))
             if metadata:
-                messagebox.showinfo("Metadata", self.metadata.stringify_metadata(os.path.basename(filename)))
+                MetadataViewer(self, os.path.basename(filename), self.metadata)
             else:
                 # show no metadata found, ask user if they want to add some
                 add_metadata = messagebox.askyesno("No metadata found", "No metadata found for this sound file. Would you like to add some?")
