@@ -25,6 +25,7 @@ Perhaps the biggest step we took in Epoch 2 was a complete refactor of the proje
 #### Contributions
  - Coden: Commenting, refactoring, implementing all validation, implementing merge + random sound playback. Manual testing for implementing validation.
  - Jacob: Sound editing, including reverse and trim_sound. File information accessing with find_length.
+ - Jack and Sam: Project planning
 
 
 # Epoch 3
@@ -36,6 +37,9 @@ Perhaps the biggest step we took in Epoch 2 was a complete refactor of the proje
 
 #### Testing
 Most of our testing was done by mimicing users. We called different functions using the command line arguments specified in the help menu and checked to make sure they had the intended effect. For renaming, we visually confirmed in our files that the original document no longer existed but a file of the new name had the same audio associated with it. Playing sounds was easier to check as there was audio associated with success (although it was occasionally hard to tell if all the sounds were playing when we called them to play concurrently). We tested edge cases and got out-of-bounds errors (that we fixed) due to the ordering of checks in some of our functions. We still need to write concrete test cases to ensure that we don't lose any of our current functionality when moving forward. 
+
+#### Contributions
+- Jack: Metadata feature (ability to add tags and description to sound, storage of timestamps and sound duration in the metadata SQLite database, integrating the metadata in the GUI, allowing the user to view and edit metadata in the GUI,) refactoring, GUI fit and finish, fixed the soundLength method.
 
 ### Use cases for epoch 2
 https://docs.google.com/document/d/1jVy2usLuIfONpKf52ehIbkFX4-a30FGDG3DknKEAECw/edit 
