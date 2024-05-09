@@ -3,7 +3,7 @@
 import os
 
 import tkinter as tk
-from tkinter import filedialog, simpledialog, messagebox
+from tkinter import filedialog, simpledialog, messagebox, font
 from datetime import datetime
 
 from playsound import AudioPlayer
@@ -24,7 +24,7 @@ class MetadataViewer(tk.Toplevel):
         self.create_widgets()
 
     def create_widgets(self):
-        self.metadata_label = tk.Label(self, text='', justify=tk.LEFT, font=("Arial", 14))
+        self.metadata_label = tk.Label(self, text='', justify=tk.LEFT, font=("Arial", 16))
         self.metadata_label.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
 
         self.edit_button = tk.Button(self, text='Edit Metadata', command=self.edit_metadata)
@@ -65,6 +65,16 @@ class AudioArchiveApp(tk.Tk):
         self.player = AudioPlayer(self)
         self.files = FileManager(self)
         self.effects = EffectManager(self)
+
+                # Set up a custom font for the entire application
+        custom_font = font.nametofont("TkDefaultFont")
+        custom_font.configure(family="Arial", size=16)  # You can change the size as needed
+
+        # Apply this custom font to all relevant widgets
+        self.option_add("*Button.Font", custom_font)
+        self.option_add("*Label.Font", custom_font)
+        self.option_add("*Entry.Font", custom_font)
+        self.option_add("*Text.Font", custom_font)
 
         # Setup GUI
         self.create_widgets()
