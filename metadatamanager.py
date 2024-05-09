@@ -11,7 +11,7 @@ class MetadataManager:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 key TEXT,
                 value TEXT,
-                length INTEGER,
+                length TEXT,
                 last_modified TEXT,
                 description TEXT,
                 tags TEXT
@@ -20,7 +20,7 @@ class MetadataManager:
         self.conn.commit()
 
     # add a new metadata item for a sound
-    def add(self, key, value, length, last_modified, description, tags):
+    def add(self, key, value, length, description, tags):
         self.cursor.execute('''
             INSERT INTO metadata (key, value, length, last_modified, description, tags) VALUES (?, ?, ?, ?, ?, ?)
         ''', (key, value, length, self.getTimeStamp(), description, tags))
@@ -92,5 +92,5 @@ class MetadataManager:
     def close(self):
         self.conn.close()
 
-    def getTimeStamp():
+    def getTimeStamp(self):
         return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")

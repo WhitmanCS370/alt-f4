@@ -4,6 +4,7 @@ import os
 
 import tkinter as tk
 from tkinter import filedialog, simpledialog, messagebox
+from datetime import datetime
 
 from playsound import AudioPlayer
 from filemanager import FileManager
@@ -28,7 +29,7 @@ class AudioArchiveApp(tk.Tk):
 
         # Initialize the cli adapter
         self.cli = CLIAdapter()
-        self.metadatamanager = MetadataManager("metadata.db")
+        self.metadata = MetadataManager("metadata.db")
 
 
     def create_widgets(self):
@@ -76,12 +77,23 @@ class AudioArchiveApp(tk.Tk):
 
     def view_metadata(self):
         filename = filedialog.askopenfilename(title='Select a sound file', initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
+        print(f'filename is {filename}')
         if filename:
-            metadata = self.metadatamanager.has_metadata(os.path.basename(filename))
+            metadata = self.metadata.has_metadata(os.path.basename(filename))
             if metadata:
-                messagebox.showinfo("Metadata", self.metadatamanager.stringify_metadata(os.path.basename(filename)))
+                messagebox.showinfo("Metadata", self.metadata.stringify_metadata(os.path.basename(filename)))
             else:
-                messagebox.showinfo("Metadata", "No metadata found for the selected sound file.")
+                # show no metadata found, ask user if they want to add some
+                add_metadata = messagebox.askyesno("No metadata found", "No metadata found for this sound file. Would you like to add some?")
+                if add_metadata:
+                    self.add_metadata(filename)
+
+    def add_metadata(self, filename):
+        print(f'filename is {filename}')
+        tags = simpledialog.askstring("Add Tags", "Enter tags separated by commas:")
+        description = simpledialog.askstring("Add Description", "Enter a description:")
+        self.metadata.add("", os.path.basename(filename), self.files.find_length(filename), description, tags)
+            
 
     def add_sound(self):
         source = filedialog.askopenfilename(title='Select a sound file to add', filetypes=[('WAV files', '*.wav')])
