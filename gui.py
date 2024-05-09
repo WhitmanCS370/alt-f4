@@ -28,7 +28,7 @@ class AudioArchiveApp(tk.Tk):
 
         # Initialize the cli adapter
         self.cli = CLIAdapter()
-        self.metadata = MetadataManager("metadata.db")
+        self.metadatamanager = MetadataManager("metadata.db")
 
 
     def create_widgets(self):
@@ -77,9 +77,9 @@ class AudioArchiveApp(tk.Tk):
     def view_metadata(self):
         filename = filedialog.askopenfilename(title='Select a sound file', initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
         if filename:
-            metadata = self.metadata.has_metadata(os.path.basename(filename))
+            metadata = self.metadatamanager.has_metadata(os.path.basename(filename))
             if metadata:
-                messagebox.showinfo("Metadata", metadata)
+                messagebox.showinfo("Metadata", self.metadatamanager.stringify_metadata(os.path.basename(filename)))
             else:
                 messagebox.showinfo("Metadata", "No metadata found for the selected sound file.")
 

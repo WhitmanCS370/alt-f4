@@ -71,6 +71,15 @@ class MetadataManager:
         row = self.cursor.fetchone()
         return row is not None
 
+    def stringify_metadata(self, filename):
+        self.cursor.execute('''
+            SELECT * FROM metadata WHERE value = ?
+        ''', (filename,))
+        row = self.cursor.fetchone()
+        if row is None:
+            return None
+        return f'Filename: {row[2]}\nLength: {row[3]}\nLast Modified: {row[4]}\nDescription: {row[5]}\nTags: {row[6]}'
+
     def get(self, key):
         self.cursor.execute('''
             SELECT value FROM metadata WHERE key = ?
