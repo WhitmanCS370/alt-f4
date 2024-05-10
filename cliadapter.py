@@ -28,9 +28,28 @@ class CLIAdapter(main):
         file_path.split('.')[0] examples relate to issue #52
         """
         if action == 'play':
-            file_path = get_relative_path(kwargs.get('file_path'))
-            file_path = file_path.split('.')[0]
-            command = f"play {file_path}"
+            print()
+            mode = kwargs.get('mode')
+            if mode == 'seq' or mode == 'multi':
+                files = []
+                for file in kwargs.get('files'):
+                    file = get_relative_path(file).split('.')[0]
+                    files.append(file)
+                files = ' '.join(files)
+                command = f"play {'-multi' if mode == 'multi' else ''} {files}"
+
+            elif mode == 'rand':
+                folder = get_relative_path(kwargs.get('folder'))
+                command = f"play -rand {folder}"
+
+            elif mode == 'delay':
+                files = []
+                for file in kwargs.get('files'):
+                    file = get_relative_path(file).split('.')[0]
+                    files.append(file)
+                files = ' '.join(files)
+                delay = kwargs.get('delay')
+                command = f"play -delay={delay} {files}"
 
         elif action == 'add_sound':
             dest = get_relative_path(kwargs.get('destination_path'))

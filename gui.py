@@ -4,7 +4,6 @@ import os
 
 import tkinter as tk
 from tkinter import filedialog, simpledialog, messagebox, font
-from datetime import datetime
 
 from playsound import AudioPlayer
 from filemanager import FileManager
@@ -55,6 +54,59 @@ class MetadataViewer(tk.Toplevel):
             self.metadata_manager.update(self.filename, description, tags)
             self.refresh_metadata()
 
+class PlayOptions(tk.Toplevel):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.title('Options')
+        self.geometry('400x300')
+        
+        self.parent = parent
+        self.create_widgets()
+
+    def create_widgets(self):
+        label = tk.Label(self, text="Select Play Mode", font=("Arial", 16))
+        label.pack(pady=10)
+
+        # Buttons
+        play_seq_button = tk.Button(self, text='Play in Sequence', command=self.play_sequentially)
+        play_seq_button.pack(pady=10)
+
+        play_multi_button = tk.Button(self, text='Simultaneous Play', command=self.play_multiple)
+        play_multi_button.pack(pady=10)
+
+        play_rand_button = tk.Button(self, text='Random from Folder', command=self.play_random)
+        play_rand_button.pack(pady=10)
+
+        play_delay_button = tk.Button(self, text='Play with Delay', command=self.play_delay)
+        play_delay_button.pack(pady=10)
+
+        close_button = tk.Button(self, text='Close', command=self.close)
+        close_button.pack(pady=10)
+
+    def play_sequentially(self):
+        files = filedialog.askopenfilenames(title='Select sound files to play in sequence', initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
+        if files:
+            self.parent.cli.run('play', files=files, mode='seq')
+
+    def play_multiple(self):
+        files = filedialog.askopenfilenames(title='Select multiple sound files to play', filetypes=[('WAV files', '*.wav')])
+        if files:
+            self.parent.cli.run('play', files=files, mode='multi')
+
+    def play_random(self):
+        folder = filedialog.askdirectory(title='Select folder for random play', initialdir=os.getcwd())
+        if folder:
+            self.parent.cli.run('play', folder=folder, mode='rand')
+
+    def play_delay(self):
+        files = filedialog.askopenfilenames(title='Select sound files to play with delay', filetypes=[('WAV files', '*.wav')])
+        delay = simpledialog.askfloat("Delay", "Enter delay time in seconds:", parent=self)
+        if files and delay is not None:
+            self.parent.cli.run('play', files=files, mode='delay', delay=delay)
+
+    def close(self):
+        self.destroy()
+
 class AudioArchiveApp(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -66,7 +118,7 @@ class AudioArchiveApp(tk.Tk):
         self.files = FileManager(self)
         self.effects = EffectManager(self)
 
-                # Set up a custom font for the entire application
+        # Set up a custom font for the entire application
         custom_font = font.nametofont("TkDefaultFont")
         custom_font.configure(family="Arial", size=16)  # You can change the size as needed
 
@@ -123,9 +175,7 @@ class AudioArchiveApp(tk.Tk):
         quit_button.pack(pady=10)
 
     def play_sound(self):
-        filename = filedialog.askopenfilename(title='Select a sound file', initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
-        if filename:
-            self.cli.run('play', file_path=filename)
+        PlayOptions(self)
 
     def view_metadata(self):
         filename = filedialog.askopenfilename(title='Select a sound file', initialdir=os.getcwd(), filetypes=[('WAV files', '*.wav')])
