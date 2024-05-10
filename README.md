@@ -17,6 +17,10 @@ Most of our challenges stemmed from trying to use GitHub. Our group experienced 
 
 Outside of issues with trying to write code in the first place, our biggest hurdle while programming was deciding how to deal with the different variations of the play command. A user should be able to play a single sound, play multiple sounds concurrently, and play multiple sounds sequentially. As we divided the work to tackle different functionality all at once, playing concurrently and sequentially were done using the same tag. When we were ready to put everything together, we needed to decide how the app should work (which function should be default and which should use a new flag).
 
+#### New architecture specifications
+https://docs.google.com/document/d/e/2PACX-1vSPnYQpgqhx5gYlePdWDlQ6_wK9AGMG9exWWu7vxbkf8pdi0E2Myf2Pgi-RcGGALU7CGyCEryk2gdDc/pub
+Use argparse to parse command line flags and options!
+
 # Epoch 2 
 
 #### Challenges
@@ -27,23 +31,22 @@ Perhaps the biggest step we took in Epoch 2 was a complete refactor of the proje
  - Jacob: Sound editing, including reverse and trim_sound. File information accessing with find_length.
  - Jack and Sam: Project planning
 
+#### Use cases for epoch 2
+https://docs.google.com/document/d/1jVy2usLuIfONpKf52ehIbkFX4-a30FGDG3DknKEAECw/edit 
 
 # Epoch 3
 
 #### Future modifications/changes
- 1. Add a GUI to increase usability and enjoyability of user. 
- 2. Add metdata/tagging functionality to make sorting and filtering sounds possible. This would greatly increase ease of use and strengthen the capabilities of the program.
- 3. TEST TEST TEST - write concrete test cases. This is something we didn't get to in Epoch 2 but we need testing for a functional app. 
+ 1. Further extend and modify the GUI to capture every feature added from epoch 2
+ 2. Adding more core features to our program such as the ability for the user to make playlists, manipulate waveforms, control sound volume, speed, etc.
+ 3. TEST TEST TEST - write concrete test cases. This is something we didn't get to in our epochs but we need testing for a functional app.
+
+#### Reflection and Challenges
+A big problem that has spilled over from epoch 2 is how coupled CLI loop is with parsing and the actual business of the program. ideally, we would have the GUI and the CLI independent of eachother as seperate modules however multiple methods, such as play in the audioplayer module, call on the parse method of its parent (which is main). this was a strange implementation that while wouldn't be impossible to untangle, the easiest solution would be to create an adapter module that translates user input from the GUI to the CLI. The problem is that while it's easy to send information from the GUI to the CLI when it comes to changing around the filesystem or audio out, we can't really get information back. If I were to edit the dispatch (do_x) methods in main to include return values, they wouldn't have been passed through the onecwd function we call in the CLI adapter, which means having to call some component modules of the CLI directly.
 
 #### Testing
 Most of our testing was done by mimicing users. We called different functions using the command line arguments specified in the help menu and checked to make sure they had the intended effect. For renaming, we visually confirmed in our files that the original document no longer existed but a file of the new name had the same audio associated with it. Playing sounds was easier to check as there was audio associated with success (although it was occasionally hard to tell if all the sounds were playing when we called them to play concurrently). We tested edge cases and got out-of-bounds errors (that we fixed) due to the ordering of checks in some of our functions. We still need to write concrete test cases to ensure that we don't lose any of our current functionality when moving forward. 
 
 #### Contributions
 - Jack: Metadata feature (ability to add tags and description to sound, storage of timestamps and sound duration in the metadata SQLite database, integrating the metadata in the GUI, allowing the user to view and edit metadata in the GUI,) refactoring, GUI fit and finish, fixed the soundLength method.
-
-### Use cases for epoch 2
-https://docs.google.com/document/d/1jVy2usLuIfONpKf52ehIbkFX4-a30FGDG3DknKEAECw/edit 
-
-### New architecture specifications
-https://docs.google.com/document/d/e/2PACX-1vSPnYQpgqhx5gYlePdWDlQ6_wK9AGMG9exWWu7vxbkf8pdi0E2Myf2Pgi-RcGGALU7CGyCEryk2gdDc/pub
-Use argparse to parse command line flags and options!
+- Sam: Designing and creating the GUI for our application, interfacing the GUI on top of the CLI, constructing user queries, designing unit test cases and failing hard!
